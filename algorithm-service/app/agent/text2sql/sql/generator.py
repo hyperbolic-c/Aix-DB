@@ -66,6 +66,18 @@ def sql_generate(state: AgentState) -> AgentState:
                                 db_name = database or db_schema or "database"
                         except Exception:
                             pass
+                        
+                        # 同步Schema到向量库（首次连接时）
+                        try:
+                            from rag.sync import sync_datasource_schema
+                            sync_datasource_schema(
+                                datasource_id=datasource_id,
+                                db_info=db_info,
+                                db_session=session
+                            )
+                        except Exception as sync_e:
+                            logger.warning(f"Schema同步到向量库失败: {sync_e}")
+                            
             except Exception as e:
                 logger.warning(f"获取数据源信息失败: {e}，使用默认值")
         
