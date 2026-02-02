@@ -1,0 +1,238 @@
+【DB_ID】 final
+【Schema】
+# Table: area_items_total_day, 区县工单统计日表
+[
+(md_id:int, 自增id),
+(area_name:string, 地区名称),
+(busi_time:string, 业务时间),
+(total_num:int, 统计总数),
+]
+# Table: items_total_day, 工单统计日表
+[
+(md_id:int, 自增id),
+(busi_time:string, 业务时间),
+(satis_num:int, 满意数),
+(connect_num:int, 接通数),
+(item_num:int, 工单量),
+]
+# Table: accept_src_items_total_day, 工单渠道统计日表
+[
+(md_id:int, 自增id),
+(accept_src_name:string, 来源名称、电话、网站),
+(accept_src_cd:string, 工单来源编码),
+(busi_time:string, 业务时间),
+(total_num:int, 统计总数),
+]
+# Table: order_type_items_total_day, 工单诉求类型统计日表
+[
+(md_id:int, 自增id),
+(busi_time:string, 业务时间),
+(order_type_name:string, 诉求类型名称eg咨询、投诉),
+(order_type_cd:string, 诉求类型编码),
+(total_num:int, 统计总数),
+]
+# Table: order_status_total_day, 工单状态日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(order_status:string, 工单状态),
+(order_cnt:int, 工单量),
+]
+# Table: assess_items_total_day, 效能监察统计日表
+[
+(md_id:int, 自增id),
+(busi_time:string, 业务时间),
+(dept_type:int, 1市直部门，2县区),
+(item_num:int, 已经办结工单),
+(complete_num:int, 按时办结量),
+(complete_avg_time:int, 平均时长),
+(satis_num:int, 满意数),
+]
+# Table: call_overview_total_day, 话务概况日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(satisfaction_cnt:int, 满意数),
+(unsatisfaction_cnt:int, 不满意),
+(reply_on_time_cnt:int, 即时答复),
+(call_cnt:int, 人工话务总量),
+(connect_cnt:int, 人工接通总量),
+]
+# Table: call_connect_total_day, 话务接通情况日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(hand_up_type:string, 挂断类型（（1：在欢迎语或IVR中挂断 2：在队列排队中挂断 3：在通话中或通话结束后挂断））),
+(hand_up_cnt:int, 数量),
+]
+# Table: sub_top_total_day, 专题事项热点TOP5日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(sub_name:string, 专题名称),
+(top_name:string, 事项名称),
+(satisfaction_cnt:int, 满意数),
+(top_cnt:int, 事项总数),
+]
+# Table: sub_accept_total_day, 专题工单来源分析
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(sub_name:string, 专题名称),
+(accept_name:string, 诉求来源),
+(accept_cnt:int, 数据量),
+]
+# Table: sub_type_total_day, 专题工单类型分析
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(sub_name:string, 专题名称),
+(type_name:string, 工单类型),
+(type_cnt:int, 工单量),
+(finish_cnt:int, 按时办结量),
+(satisfaction_cnt:int, 工单满意数),
+(avg_handler_time:double, 平均处理时长),
+]
+# Table: sub_area_total_day, 专题区市县工单日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(sub_name:string, 专题名称),
+(area:string, 区市县单位),
+(order_cnt:int, 工单量),
+(finish_cnt:int, 办结量),
+(avg_handler_time:double, 平均处理时长),
+(satisfaction_cnt:int, 工单满意数),
+(negative_cnt:int, 工单差评数),
+(reply_on_time_cnt:int, 按时回复数),
+]
+# Table: sub_warn_total_day, 专题工单监察分析日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(sub_name:string, 专题名称),
+(red_cnt:int, 红牌工单量),
+(yellow_cnt:int, 黄牌工单量),
+]
+# Table: sub_monitor_total_day, 专题办件效能分析日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(sub_name:string, 专题名称),
+(type_name:string, 排行类型（1市直部门，2区市县）),
+(name:string, 名称（单位名称、区县名称）),
+(item_num:int, 工单量),
+(complete_cnt:int, 按时办结量),
+(avg_handler_time:int, 平均处理时长),
+(satisfaction_cnt:int, 服务满意数),
+]
+# Table: sub_assess_total_day, 专题工单评价分析日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(sub_name:string, 专题名称),
+(assess_cnt:int, 办结评价数),
+(satisfaction_one_cnt:int, 非常不满意),
+(satisfaction_two_cnt:int, 不满意),
+(satisfaction_three_cnt:int, 基本满意),
+(satisfaction_four_cnt:int, 满意),
+(satisfaction_five_cnt:int, 非常满意),
+(satisfaction_zero_cnt:int, 未评价),
+]
+# Table: item_bmh_total_day, 便民汇统计日表
+[
+(md_id:int, 自增id),
+(busi_time:string, 业务时间),
+(reply_total:int, 回复总数),
+(receive_cnt:int, 收到工单量),
+(handle_cnt:int, 职能局处理),
+(hot_line_handle_cnt:int, 热线平台处理),
+(reply_on_time_cnt:double, 按时回复数),
+(chan_type:int, 类型（1总体情况，2国办）),
+]
+# Table: item_callback_total_day, 工单回访情况日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(callback_type:int, 回访类型：1人工回访，2短信回访，3智能语音),
+(callback_cnt:int, 回访发起量),
+(success_cnt:int, 回访成功量),
+(satisfaction_cnt:int, 回访满意量),
+(dissatisfaction_cnt:int, 回访不满意量),
+(no_evaluate_cnt:int, 未评价量),
+(avg_callback_time:int, 回访平均通话时长（分钟）),
+]
+# Table: item_overdue_total_day, 工单逾期分析日表
+[
+(md_id:int, 自增主键),
+(busi_time:string, 业务时间),
+(type_name:int, 维度：1.工单紧急程度，2.工单处理阶段),
+(name:string, 紧急程度、处理阶段),
+(due_cnt:int, 当期应办结量),
+(overdue_cnt:int, 逾期办结量),
+(serious_overdue_cnt:int, 严重逾期量),
+(avg_overdue_time:int, 逾期工单平均超时时长（分钟）),
+]
+# Table: order_flow_total_day, 工单流转分析表
+[
+(md_id:int, 自增主键),
+(busi_date:string, 统计日期),
+(dept_id:string, 部门ID),
+(dept_name:string, 部门名称),
+(flow_stage:string, 工单状态),
+(total_cnt:int, 当日进入该环节的工单总数),
+(rollback_cnt:int, 回退工单数),
+]
+# Table: order_full_total_day, 工单业务全景表
+[
+(md_id:int, 自增主键),
+(busi_date:string, 统计日期),
+(region_name:string, 地区名称（市/县/镇）),
+(org_level:int, 组织层级（1市级，2县级，3镇级）),
+(total_orders:int, 当日提交的总工单量),
+(process_orders:int, 已处理工单量),
+(pending_orders:int, 未处理工单量),
+(night_orders:int, 夜间工单量),
+(cancelled_orders:int, 用户取消工单量),
+(avg_response_time:double, 平均响应时间（分钟）),
+(avg_finish_time:double, 平均办结时长（分钟）),
+(first_contact_resolved:int, 一次接触解决工单数),
+(escalation_cnt:int, 升级处理工单数),
+(repeat_cnt:int, 重复工单数),
+(online_channel_cnt:int, 在线渠道工单数),
+(phone_channel_cnt:int, 电话渠道工单数),
+(email_channel_cnt:int, 邮件渠道工单数),
+(mobile_app_cnt:int, App 提交工单数),
+(alert_timeout_sign_orders:int, 超时未签工单数),
+(alert_timeout_process_orders:int, 超时未办工单数),
+(alert_repeat_exceed_orders:int, 回退超次工单数),
+(alert_sentiment_keyword_orders:int, 包含关键词工单数),
+(high_priority_cnt:int, 高优先级工单数),
+(medium_priority_cnt:int, 中优先级工单数),
+(low_priority_cnt:int, 低优先级工单数),
+(overdue_pct:double, 超期占比（%）),
+(satisfaction_score:double, 综合满意度评分（30-100）),
+(handler_cnt:int, 当日处理人员数),
+(bot_handled_cnt:int, 自动处理工单数),
+(handover_cnt:int, 转交工单数),
+(top_keyword_1:string, 热点词汇1),
+(top_keyword_1_cnt:int, 热点词汇1出现数量),
+(top_keyword_2:string, 热点词汇2),
+(top_keyword_2_cnt:int, 热点词汇2出现数量),
+(top_keyword_3:string, 热点词汇3),
+(top_keyword_3_cnt:int, 热点词汇3出现数量),
+(early_response_orders:int, 快速响应工单数),
+(late_response_orders:int, 延迟响应工单数),
+(avg_wait_time_user:double, 用户等待平均时间（分钟）),
+(repeat_user_cnt:int, 当日重复提交工单用户数),
+(first_time_user_cnt:int, 当日首次提交工单用户数),
+(multi_channel_user_cnt:int, 使用多渠道提交的用户数),
+(escalated_user_cnt:int, 升级工单用户数),
+(followup_orders:int, 需回访工单数),
+(feedback_received_cnt:int, 收到用户反馈数),
+(auto_reply_cnt:int, 自动回复工单数),
+(manual_reply_cnt:int, 人工回复工单数),
+(satisfaction_survey_sent:int, 发送满意度调查工单数),
+(satisfaction_survey_responded:int, 回收满意度调查工单数),
+(avg_survey_response_time:double, 平均满意度反馈时间（分钟）),
+]

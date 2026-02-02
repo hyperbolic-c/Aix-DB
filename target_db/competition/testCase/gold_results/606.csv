@@ -1,0 +1,2 @@
+"ROUND (SUM(complete_num)*100.0/SUM(item_num),2)"
+55.78

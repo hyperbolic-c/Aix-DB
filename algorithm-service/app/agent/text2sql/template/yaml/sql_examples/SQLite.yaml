@@ -1,0 +1,92 @@
+# SQLite SQL模板
+# 针对SQLite数据库的SQL生成规则
+
+template:
+  # 引号规则 - SQLite使用双引号
+  quot_rule: |
+    <rule>
+      请使用双引号包裹表名、字段名，字符串使用单引号，如：
+      SELECT "field_name" FROM "table_name" WHERE "status" = 'active'
+      注意：SQLite不使用schema前缀，直接使用表名，不要写成 "schema"."table_name"
+    </rule>
+  
+  # 限制规则
+  limit_rule: |
+    <rule>
+      所有查询都必须包含 LIMIT 子句，默认限制为 100 条：
+      SELECT * FROM "table_name" LIMIT 100
+    </rule>
+  
+  # 其他规则
+  other_rule: |
+    <rule>
+      1. 日期处理使用 DATE() 函数，如：DATE('now', '-7 days')
+      2. 字符串拼接使用 || 操作符
+      3. 聚合函数：COUNT, SUM, AVG, MAX, MIN
+      4. 条件判断使用 CASE WHEN ... THEN ... ELSE ... END
+      5. 时间字段为 TEXT 类型，格式为 'yyyy-MM-dd'
+      6. 不要使用 DATE_ADD/DATE_SUB 等MySQL函数，使用 DATE('now', '-1 day') 格式
+    </rule>
+  
+  # 基础示例
+  basic_example: |
+    <sql-examples>
+      <question>
+        查询最近7天的工单量
+      </question>
+      <suggestion-answer>
+        使用 DATE() 函数处理日期，查询 busi_time >= DATE('now', '-7 days')
+      </suggestion-answer>
+    </sql-examples>
+  
+  # 示例引擎
+  example_engine: "SQLite 3"
+  
+  # 示例1 - 带LIMIT
+  example_answer_1_with_limit: |
+    SELECT "order_cnt" FROM "items_total_day" WHERE "busi_time" = '2024-01-15' LIMIT 100
+  
+  # 示例1 - 不带LIMIT
+  example_answer_1: |
+    SELECT "order_cnt" FROM "items_total_day" WHERE "busi_time" = '2024-01-15'
+  
+  # 示例2 - 带LIMIT
+  example_answer_2_with_limit: |
+    SELECT "area", SUM("order_cnt") as "total" 
+    FROM "sub_area_total_day" 
+    WHERE "busi_time" >= DATE('now', '-7 days') 
+    GROUP BY "area" 
+    ORDER BY "total" DESC 
+    LIMIT 100
+  
+  # 示例2 - 不带LIMIT
+  example_answer_2: |
+    SELECT "area", SUM("order_cnt") as "total" 
+    FROM "sub_area_total_day" 
+    WHERE "busi_time" >= DATE('now', '-7 days') 
+    GROUP BY "area" 
+    ORDER BY "total" DESC
+  
+  # 示例3 - 带LIMIT
+  example_answer_3_with_limit: |
+    SELECT "sub_name", "type_name", "type_cnt" 
+    FROM "sub_type_total_day" 
+    WHERE "busi_time" >= DATE('now', '-30 days') 
+    LIMIT 100
+  
+  # 示例3 - 不带LIMIT
+  example_answer_3: |
+    SELECT "sub_name", "type_name", "type_cnt" 
+    FROM "sub_type_total_day" 
+    WHERE "busi_time" >= DATE('now', '-30 days')
+  
+  # 处理检查步骤
+  process_check: |
+    <SQL-Generation-Process>
+      1. 分析用户问题，理解查询意图
+      2. 根据Schema选择合适的表和字段
+      3. 使用SQLite语法构建SQL
+      4. 确保不使用schema前缀
+      5. 添加LIMIT限制
+      6. 验证SQL语法正确性
+    </SQL-Generation-Process>

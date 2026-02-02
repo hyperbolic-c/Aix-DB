@@ -1,0 +1,5 @@
+name,SUM(due_cnt),SUM(overdue_cnt),SUM(serious_overdue_cnt)
+一般,3946,1138,556
+应急事件,3929,1004,523
+特急,3954,1042,485
+紧急,4090,1352,753

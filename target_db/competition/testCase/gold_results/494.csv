@@ -1,0 +1,3 @@
+type,unit,"round(satisfaction_rate*100.0,2)"
+市直部门,B部门,71.25
+区县,C区,70.29

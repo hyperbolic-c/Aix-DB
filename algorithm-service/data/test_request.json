@@ -1,0 +1,1924 @@
+{
+  "query": "查询最近7天的工单总量",
+  "datasource_config": {
+    "db_type": "sqlite",
+    "host": "",
+    "port": 0,
+    "database": "/Users/liam/LLMPro/Aix-DB/target_db/competition/final.db",
+    "username": "",
+    "password": ""
+  },
+  "schema_info": {
+    "tables": [
+      {
+        "name": "call_overview_total_day",
+        "comment": "呼叫总体情况统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "satisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          },
+          {
+            "name": "unsatisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "不满意数"
+          },
+          {
+            "name": "reply_on_time_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "按时回复数/即时答复数"
+          },
+          {
+            "name": "call_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "人工话务总量"
+          },
+          {
+            "name": "connect_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "人工接通总量"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "satisfaction_cnt": 17,
+            "unsatisfaction_cnt": 260,
+            "reply_on_time_cnt": 149,
+            "call_cnt": 357,
+            "connect_cnt": 179
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-02",
+            "satisfaction_cnt": 103,
+            "unsatisfaction_cnt": 236,
+            "reply_on_time_cnt": 18,
+            "call_cnt": 401,
+            "connect_cnt": 6
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-03",
+            "satisfaction_cnt": 52,
+            "unsatisfaction_cnt": 193,
+            "reply_on_time_cnt": 211,
+            "call_cnt": 279,
+            "connect_cnt": 186
+          }
+        ]
+      },
+      {
+        "name": "call_connect_total_day",
+        "comment": "呼叫接通情况统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "hand_up_type",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "挂断类型"
+          },
+          {
+            "name": "hand_up_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "挂断数量"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "hand_up_type": "1",
+            "hand_up_cnt": 59
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "hand_up_type": "2",
+            "hand_up_cnt": 9
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-01",
+            "hand_up_type": "3",
+            "hand_up_cnt": 111
+          }
+        ]
+      },
+      {
+        "name": "area_items_total_day",
+        "comment": "地区工单统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "area_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "地区名称"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "total_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "统计总数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "area_name": "C区",
+            "busi_time": "2022-05-01",
+            "total_num": 33
+          },
+          {
+            "md_id": 2,
+            "area_name": "D区",
+            "busi_time": "2022-05-01",
+            "total_num": 108
+          },
+          {
+            "md_id": 3,
+            "area_name": "B区",
+            "busi_time": "2022-05-01",
+            "total_num": 39
+          }
+        ]
+      },
+      {
+        "name": "accept_src_items_total_day",
+        "comment": "受理来源统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "accept_src_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "受理来源名称"
+          },
+          {
+            "name": "accept_src_cd",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "受理来源编码"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "total_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "统计总数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "accept_src_name": "电话",
+            "accept_src_cd": "0100",
+            "busi_time": "2022-05-01",
+            "total_num": 53
+          },
+          {
+            "md_id": 2,
+            "accept_src_name": "来信",
+            "accept_src_cd": "0200",
+            "busi_time": "2022-05-01",
+            "total_num": 63
+          },
+          {
+            "md_id": 3,
+            "accept_src_name": "网站",
+            "accept_src_cd": "0300",
+            "busi_time": "2022-05-01",
+            "total_num": 16
+          }
+        ]
+      },
+      {
+        "name": "order_type_items_total_day",
+        "comment": "工单类型统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "order_type_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "诉求类型名称"
+          },
+          {
+            "name": "order_type_cd",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "诉求类型编码"
+          },
+          {
+            "name": "total_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "统计总数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "order_type_name": "咨询",
+            "order_type_cd": "0100",
+            "total_num": 86
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "order_type_name": "投诉",
+            "order_type_cd": "0200",
+            "total_num": 40
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-01",
+            "order_type_name": "意见建议",
+            "order_type_cd": "0300",
+            "total_num": 115
+          }
+        ]
+      },
+      {
+        "name": "item_bmh_total_day",
+        "comment": "办件回复情况统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "reply_total",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "回复总数"
+          },
+          {
+            "name": "receive_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "收到工单量"
+          },
+          {
+            "name": "handle_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "处理工单量"
+          },
+          {
+            "name": "hot_line_handle_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "热线平台处理量"
+          },
+          {
+            "name": "reply_on_time_cnt",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "按时回复数/即时答复数"
+          },
+          {
+            "name": "chan_type",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "类型（1总体情况，2国办）"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "reply_total": 152,
+            "receive_cnt": 605,
+            "handle_cnt": 282,
+            "hot_line_handle_cnt": 223,
+            "reply_on_time_cnt": 42.0,
+            "chan_type": 1
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "reply_total": 523,
+            "receive_cnt": 568,
+            "handle_cnt": 294,
+            "hot_line_handle_cnt": 215,
+            "reply_on_time_cnt": 514.0,
+            "chan_type": 2
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-02",
+            "reply_total": 315,
+            "receive_cnt": 696,
+            "handle_cnt": 216,
+            "hot_line_handle_cnt": 282,
+            "reply_on_time_cnt": 170.0,
+            "chan_type": 1
+          }
+        ]
+      },
+      {
+        "name": "assess_items_total_day",
+        "comment": "考核项目统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "dept_type",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "部门类型（1市直部门，2县区）"
+          },
+          {
+            "name": "item_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "工单数量/已办结工单"
+          },
+          {
+            "name": "complete_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "按时办结量"
+          },
+          {
+            "name": "complete_avg_time",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "平均处理时长（分钟）"
+          },
+          {
+            "name": "satis_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "dept_type": 1,
+            "item_num": 256,
+            "complete_num": 158,
+            "complete_avg_time": 816,
+            "satis_num": 173
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "dept_type": 2,
+            "item_num": 695,
+            "complete_num": 274,
+            "complete_avg_time": 812,
+            "satis_num": 534
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-02",
+            "dept_type": 1,
+            "item_num": 614,
+            "complete_num": 567,
+            "complete_avg_time": 1152,
+            "satis_num": 183
+          }
+        ]
+      },
+      {
+        "name": "sub_accept_total_day",
+        "comment": "专题受理统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "sub_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "专题名称"
+          },
+          {
+            "name": "accept_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "诉求来源"
+          },
+          {
+            "name": "accept_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "受理数量"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 0,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "accept_name": "电话",
+            "accept_cnt": 7
+          },
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "sub_name": "公卫医疗",
+            "accept_name": "电话",
+            "accept_cnt": 14
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "sub_name": "城乡建设",
+            "accept_name": "电话",
+            "accept_cnt": 2
+          }
+        ]
+      },
+      {
+        "name": "sub_top_total_day",
+        "comment": "专题TOP统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "sub_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "专题名称"
+          },
+          {
+            "name": "top_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "事项名称"
+          },
+          {
+            "name": "satisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          },
+          {
+            "name": "top_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "事项总数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 0,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "top_name": "科技事务",
+            "satisfaction_cnt": 43,
+            "top_cnt": 47
+          },
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "top_name": "教育管理",
+            "satisfaction_cnt": 63,
+            "top_cnt": 67
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "top_name": "文化管理",
+            "satisfaction_cnt": 66,
+            "top_cnt": 74
+          }
+        ]
+      },
+      {
+        "name": "sub_type_total_day",
+        "comment": "专题类型统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "sub_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "专题名称"
+          },
+          {
+            "name": "type_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "类型名称/工单类型"
+          },
+          {
+            "name": "type_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "类型数量/工单量"
+          },
+          {
+            "name": "finish_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "按时办结量/办结量"
+          },
+          {
+            "name": "satisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          },
+          {
+            "name": "avg_handler_time",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "平均处理时长（分钟）"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 0,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "type_name": "咨询",
+            "type_cnt": 29,
+            "finish_cnt": 28,
+            "satisfaction_cnt": 26,
+            "avg_handler_time": 2.74
+          },
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "type_name": "投诉",
+            "type_cnt": 35,
+            "finish_cnt": 34,
+            "satisfaction_cnt": 33,
+            "avg_handler_time": 13.35
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "type_name": "意见建议",
+            "type_cnt": 9,
+            "finish_cnt": 9,
+            "satisfaction_cnt": 8,
+            "avg_handler_time": 15.03
+          }
+        ]
+      },
+      {
+        "name": "sub_area_total_day",
+        "comment": "专题地区统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "sub_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "专题名称"
+          },
+          {
+            "name": "area",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "区市县单位"
+          },
+          {
+            "name": "order_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "工单量"
+          },
+          {
+            "name": "finish_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "按时办结量/办结量"
+          },
+          {
+            "name": "avg_handler_time",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "平均处理时长（分钟）"
+          },
+          {
+            "name": "satisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          },
+          {
+            "name": "negative_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "差评数"
+          },
+          {
+            "name": "reply_on_time_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "按时回复数/即时答复数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 53506,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "area": "A区",
+            "order_cnt": 36,
+            "finish_cnt": 31,
+            "avg_handler_time": 2.73,
+            "satisfaction_cnt": 27,
+            "negative_cnt": 1,
+            "reply_on_time_cnt": 28
+          },
+          {
+            "md_id": 53507,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "area": "B区",
+            "order_cnt": 27,
+            "finish_cnt": 25,
+            "avg_handler_time": 3.37,
+            "satisfaction_cnt": 17,
+            "negative_cnt": 2,
+            "reply_on_time_cnt": 22
+          },
+          {
+            "md_id": 53508,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "area": "C区",
+            "order_cnt": 25,
+            "finish_cnt": 20,
+            "avg_handler_time": 1.18,
+            "satisfaction_cnt": 18,
+            "negative_cnt": 0,
+            "reply_on_time_cnt": 16
+          }
+        ]
+      },
+      {
+        "name": "sub_warn_total_day",
+        "comment": "专题预警统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "sub_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "专题名称"
+          },
+          {
+            "name": "red_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "红牌工单量"
+          },
+          {
+            "name": "yellow_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "黄牌工单量"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "red_cnt": 99,
+            "yellow_cnt": 80
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "sub_name": "公卫医疗",
+            "red_cnt": 33,
+            "yellow_cnt": 17
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-01",
+            "sub_name": "城乡建设",
+            "red_cnt": 133,
+            "yellow_cnt": 56
+          }
+        ]
+      },
+      {
+        "name": "order_status_total_day",
+        "comment": "工单状态统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "TEXT",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "order_status",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "工单状态"
+          },
+          {
+            "name": "order_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "工单量"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": "0",
+            "busi_time": "2022-05-01",
+            "order_status": "话务员暂存",
+            "order_cnt": 56
+          },
+          {
+            "md_id": "1",
+            "busi_time": "2022-05-01",
+            "order_status": "话务员受理",
+            "order_cnt": 52
+          },
+          {
+            "md_id": "2",
+            "busi_time": "2022-05-01",
+            "order_status": "话务员办理",
+            "order_cnt": 86
+          }
+        ]
+      },
+      {
+        "name": "sub_monitor_total_day",
+        "comment": "专题监控统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "sub_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "专题名称"
+          },
+          {
+            "name": "name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "名称/部门区域名称"
+          },
+          {
+            "name": "type_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "类型名称/工单类型"
+          },
+          {
+            "name": "item_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "工单数量/已办结工单"
+          },
+          {
+            "name": "complete_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": ""
+          },
+          {
+            "name": "avg_handler_time",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "平均处理时长（分钟）"
+          },
+          {
+            "name": "satisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "name": "B部门",
+            "type_name": "1",
+            "item_num": 111,
+            "complete_cnt": 78,
+            "avg_handler_time": 47,
+            "satisfaction_cnt": 72
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "name": "A区",
+            "type_name": "2",
+            "item_num": 139,
+            "complete_cnt": 111,
+            "avg_handler_time": 39,
+            "satisfaction_cnt": 101
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-01",
+            "sub_name": "公卫医疗",
+            "name": "C部门",
+            "type_name": "1",
+            "item_num": 38,
+            "complete_cnt": 33,
+            "avg_handler_time": 36,
+            "satisfaction_cnt": 28
+          }
+        ]
+      },
+      {
+        "name": "sub_assess_total_day",
+        "comment": "专题考核统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "sub_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "专题名称"
+          },
+          {
+            "name": "assess_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "办结评价数"
+          },
+          {
+            "name": "satisfaction_one_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "非常不满意数"
+          },
+          {
+            "name": "satisfaction_two_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "不满意数"
+          },
+          {
+            "name": "satisfaction_three_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "基本满意数"
+          },
+          {
+            "name": "satisfaction_four_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          },
+          {
+            "name": "satisfaction_five_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "非常满意数"
+          },
+          {
+            "name": "satisfaction_zero_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "未评价数"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 0,
+            "busi_time": "2022-05-01",
+            "sub_name": "科教文体",
+            "assess_cnt": 206,
+            "satisfaction_one_cnt": 4,
+            "satisfaction_two_cnt": 20,
+            "satisfaction_three_cnt": 50,
+            "satisfaction_four_cnt": 114,
+            "satisfaction_five_cnt": 15,
+            "satisfaction_zero_cnt": 3
+          },
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "sub_name": "公卫医疗",
+            "assess_cnt": 216,
+            "satisfaction_one_cnt": 5,
+            "satisfaction_two_cnt": 14,
+            "satisfaction_three_cnt": 69,
+            "satisfaction_four_cnt": 118,
+            "satisfaction_five_cnt": 8,
+            "satisfaction_zero_cnt": 2
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "sub_name": "城乡建设",
+            "assess_cnt": 423,
+            "satisfaction_one_cnt": 12,
+            "satisfaction_two_cnt": 31,
+            "satisfaction_three_cnt": 115,
+            "satisfaction_four_cnt": 246,
+            "satisfaction_five_cnt": 18,
+            "satisfaction_zero_cnt": 1
+          }
+        ]
+      },
+      {
+        "name": "items_total_day",
+        "comment": "工单总体统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "satis_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          },
+          {
+            "name": "connect_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "接通数"
+          },
+          {
+            "name": "item_num",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "工单数量/已办结工单"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "satis_num": 32,
+            "connect_num": 688,
+            "item_num": 887
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-02",
+            "satis_num": 613,
+            "connect_num": 234,
+            "item_num": 691
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-03",
+            "satis_num": 691,
+            "connect_num": 677,
+            "item_num": 930
+          }
+        ]
+      },
+      {
+        "name": "item_callback_total_day",
+        "comment": "回访统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "callback_type",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "回访类型"
+          },
+          {
+            "name": "callback_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "回访数量"
+          },
+          {
+            "name": "success_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "成功回访数"
+          },
+          {
+            "name": "satisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "满意数"
+          },
+          {
+            "name": "dissatisfaction_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "不满意数"
+          },
+          {
+            "name": "no_evaluate_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "未评价数"
+          },
+          {
+            "name": "avg_callback_time",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "平均回访时长（分钟）"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "callback_type": 1,
+            "callback_cnt": 76,
+            "success_cnt": 41,
+            "satisfaction_cnt": 37,
+            "dissatisfaction_cnt": 2,
+            "no_evaluate_cnt": 2,
+            "avg_callback_time": 3.84
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "callback_type": 2,
+            "callback_cnt": 107,
+            "success_cnt": 89,
+            "satisfaction_cnt": 81,
+            "dissatisfaction_cnt": 7,
+            "no_evaluate_cnt": 1,
+            "avg_callback_time": 0.0
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-01",
+            "callback_type": 3,
+            "callback_cnt": 148,
+            "success_cnt": 120,
+            "satisfaction_cnt": 85,
+            "dissatisfaction_cnt": 2,
+            "no_evaluate_cnt": 33,
+            "avg_callback_time": 2.79
+          }
+        ]
+      },
+      {
+        "name": "order_flow_total_day",
+        "comment": "工单流转统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_date",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务日期（yyyy-MM-dd）"
+          },
+          {
+            "name": "dept_id",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "部门ID"
+          },
+          {
+            "name": "dept_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "部门名称"
+          },
+          {
+            "name": "flow_stage",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "流转阶段"
+          },
+          {
+            "name": "total_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "总数量"
+          },
+          {
+            "name": "rollback_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "回退数量"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_date": "2022-05-01",
+            "dept_id": "1001",
+            "dept_name": "客服一部",
+            "flow_stage": "话务员暂存",
+            "total_cnt": 227,
+            "rollback_cnt": 0
+          },
+          {
+            "md_id": 2,
+            "busi_date": "2022-05-01",
+            "dept_id": "1001",
+            "dept_name": "客服一部",
+            "flow_stage": "话务员受理",
+            "total_cnt": 125,
+            "rollback_cnt": 11
+          },
+          {
+            "md_id": 3,
+            "busi_date": "2022-05-01",
+            "dept_id": "1002",
+            "dept_name": "客服二部",
+            "flow_stage": "话务员受理",
+            "total_cnt": 124,
+            "rollback_cnt": 23
+          }
+        ]
+      },
+      {
+        "name": "order_full_total_day",
+        "comment": "工单全量统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_date",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务日期（yyyy-MM-dd）"
+          },
+          {
+            "name": "region_name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "地区名称（市/县/镇）"
+          },
+          {
+            "name": "org_level",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "组织层级（1市级，2县级，3镇级）"
+          },
+          {
+            "name": "total_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "当日提交的总工单量"
+          },
+          {
+            "name": "process_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "已处理工单量"
+          },
+          {
+            "name": "pending_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "未处理工单量"
+          },
+          {
+            "name": "night_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "夜间工单量"
+          },
+          {
+            "name": "cancelled_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "用户取消工单量"
+          },
+          {
+            "name": "avg_response_time",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "平均响应时间（分钟）"
+          },
+          {
+            "name": "avg_finish_time",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "平均办结时长（分钟）"
+          },
+          {
+            "name": "first_contact_resolved",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "一次接触解决工单数"
+          },
+          {
+            "name": "escalation_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "升级处理工单数"
+          },
+          {
+            "name": "repeat_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "重复工单数"
+          },
+          {
+            "name": "online_channel_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "在线渠道工单数"
+          },
+          {
+            "name": "phone_channel_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "电话渠道工单数"
+          },
+          {
+            "name": "email_channel_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "邮件渠道工单数"
+          },
+          {
+            "name": "mobile_app_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "App提交工单数"
+          },
+          {
+            "name": "alert_timeout_sign_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "超时未签工单数"
+          },
+          {
+            "name": "alert_timeout_process_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "超时未办工单数"
+          },
+          {
+            "name": "alert_repeat_exceed_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "回退超次工单数"
+          },
+          {
+            "name": "alert_sentiment_keyword_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "包含舆情关键词工单数"
+          },
+          {
+            "name": "high_priority_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "高优先级工单数"
+          },
+          {
+            "name": "medium_priority_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "中优先级工单数"
+          },
+          {
+            "name": "low_priority_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "低优先级工单数"
+          },
+          {
+            "name": "overdue_pct",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "超期占比（%）"
+          },
+          {
+            "name": "satisfaction_score",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "综合满意度评分（30-100）"
+          },
+          {
+            "name": "handler_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "当日处理人员数"
+          },
+          {
+            "name": "bot_handled_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "自动处理工单数"
+          },
+          {
+            "name": "handover_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "转交工单数"
+          },
+          {
+            "name": "top_keyword_1",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "热点词汇1"
+          },
+          {
+            "name": "top_keyword_1_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "热点词汇1出现数量"
+          },
+          {
+            "name": "top_keyword_2",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "热点词汇2"
+          },
+          {
+            "name": "top_keyword_2_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "热点词汇2出现数量"
+          },
+          {
+            "name": "top_keyword_3",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "热点词汇3"
+          },
+          {
+            "name": "top_keyword_3_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "热点词汇3出现数量"
+          },
+          {
+            "name": "early_response_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "快速响应工单数"
+          },
+          {
+            "name": "late_response_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "延迟响应工单数"
+          },
+          {
+            "name": "avg_wait_time_user",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "用户等待平均时间（分钟）"
+          },
+          {
+            "name": "repeat_user_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "当日重复提交工单用户数"
+          },
+          {
+            "name": "first_time_user_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "当日首次提交工单用户数"
+          },
+          {
+            "name": "multi_channel_user_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "使用多渠道提交的用户数"
+          },
+          {
+            "name": "escalated_user_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "升级工单用户数"
+          },
+          {
+            "name": "followup_orders",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "需回访工单数"
+          },
+          {
+            "name": "feedback_received_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "收到用户反馈数"
+          },
+          {
+            "name": "auto_reply_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "自动回复工单数"
+          },
+          {
+            "name": "manual_reply_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "人工回复工单数"
+          },
+          {
+            "name": "satisfaction_survey_sent",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "发送满意度调查工单数"
+          },
+          {
+            "name": "satisfaction_survey_responded",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "回收满意度调查工单数"
+          },
+          {
+            "name": "avg_survey_response_time",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "平均满意度反馈时间（分钟）"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_date": "2022-05-01",
+            "region_name": "A市",
+            "org_level": 1,
+            "total_orders": 437,
+            "process_orders": 428,
+            "pending_orders": 9,
+            "night_orders": 183,
+            "cancelled_orders": 21,
+            "avg_response_time": 247.55,
+            "avg_finish_time": 37.91,
+            "first_contact_resolved": 122,
+            "escalation_cnt": 0,
+            "repeat_cnt": 8,
+            "online_channel_cnt": 186,
+            "phone_channel_cnt": 146,
+            "email_channel_cnt": 86,
+            "mobile_app_cnt": 19,
+            "alert_timeout_sign_orders": 24,
+            "alert_timeout_process_orders": 43,
+            "alert_repeat_exceed_orders": 14,
+            "alert_sentiment_keyword_orders": 18,
+            "high_priority_cnt": 1,
+            "medium_priority_cnt": 162,
+            "low_priority_cnt": 274,
+            "overdue_pct": 9.45,
+            "satisfaction_score": 55.53,
+            "handler_cnt": 2,
+            "bot_handled_cnt": 79,
+            "handover_cnt": 6,
+            "top_keyword_1": "燃气",
+            "top_keyword_1_cnt": 101,
+            "top_keyword_2": "安全",
+            "top_keyword_2_cnt": 96,
+            "top_keyword_3": "污染",
+            "top_keyword_3_cnt": 83,
+            "early_response_orders": 209,
+            "late_response_orders": 168,
+            "avg_wait_time_user": 18.17,
+            "repeat_user_cnt": 135,
+            "first_time_user_cnt": 212,
+            "multi_channel_user_cnt": 3,
+            "escalated_user_cnt": 24,
+            "followup_orders": 198,
+            "feedback_received_cnt": 74,
+            "auto_reply_cnt": 4,
+            "manual_reply_cnt": 50,
+            "satisfaction_survey_sent": 184,
+            "satisfaction_survey_responded": 71,
+            "avg_survey_response_time": 95.0
+          },
+          {
+            "md_id": 2,
+            "busi_date": "2022-05-01",
+            "region_name": "B市",
+            "org_level": 1,
+            "total_orders": 404,
+            "process_orders": 313,
+            "pending_orders": 91,
+            "night_orders": 91,
+            "cancelled_orders": 1,
+            "avg_response_time": 14.0,
+            "avg_finish_time": 67.58,
+            "first_contact_resolved": 29,
+            "escalation_cnt": 8,
+            "repeat_cnt": 5,
+            "online_channel_cnt": 101,
+            "phone_channel_cnt": 67,
+            "email_channel_cnt": 136,
+            "mobile_app_cnt": 100,
+            "alert_timeout_sign_orders": 12,
+            "alert_timeout_process_orders": 7,
+            "alert_repeat_exceed_orders": 15,
+            "alert_sentiment_keyword_orders": 29,
+            "high_priority_cnt": 266,
+            "medium_priority_cnt": 76,
+            "low_priority_cnt": 62,
+            "overdue_pct": 4.12,
+            "satisfaction_score": 30.48,
+            "handler_cnt": 8,
+            "bot_handled_cnt": 114,
+            "handover_cnt": 53,
+            "top_keyword_1": "交通",
+            "top_keyword_1_cnt": 321,
+            "top_keyword_2": "快递",
+            "top_keyword_2_cnt": 192,
+            "top_keyword_3": "路灯",
+            "top_keyword_3_cnt": 83,
+            "early_response_orders": 156,
+            "late_response_orders": 104,
+            "avg_wait_time_user": 85.01,
+            "repeat_user_cnt": 199,
+            "first_time_user_cnt": 137,
+            "multi_channel_user_cnt": 226,
+            "escalated_user_cnt": 300,
+            "followup_orders": 122,
+            "feedback_received_cnt": 56,
+            "auto_reply_cnt": 298,
+            "manual_reply_cnt": 13,
+            "satisfaction_survey_sent": 74,
+            "satisfaction_survey_responded": 70,
+            "avg_survey_response_time": 43.58
+          },
+          {
+            "md_id": 3,
+            "busi_date": "2022-05-01",
+            "region_name": "A县",
+            "org_level": 2,
+            "total_orders": 347,
+            "process_orders": 347,
+            "pending_orders": 0,
+            "night_orders": 27,
+            "cancelled_orders": 31,
+            "avg_response_time": 272.36,
+            "avg_finish_time": 82.49,
+            "first_contact_resolved": 103,
+            "escalation_cnt": 22,
+            "repeat_cnt": 16,
+            "online_channel_cnt": 129,
+            "phone_channel_cnt": 67,
+            "email_channel_cnt": 112,
+            "mobile_app_cnt": 39,
+            "alert_timeout_sign_orders": 1,
+            "alert_timeout_process_orders": 28,
+            "alert_repeat_exceed_orders": 4,
+            "alert_sentiment_keyword_orders": 2,
+            "high_priority_cnt": 41,
+            "medium_priority_cnt": 135,
+            "low_priority_cnt": 171,
+            "overdue_pct": 0.68,
+            "satisfaction_score": 46.97,
+            "handler_cnt": 19,
+            "bot_handled_cnt": 46,
+            "handover_cnt": 46,
+            "top_keyword_1": "停车",
+            "top_keyword_1_cnt": 342,
+            "top_keyword_2": "道路",
+            "top_keyword_2_cnt": 63,
+            "top_keyword_3": "物业",
+            "top_keyword_3_cnt": 182,
+            "early_response_orders": 273,
+            "late_response_orders": 66,
+            "avg_wait_time_user": 83.89,
+            "repeat_user_cnt": 23,
+            "first_time_user_cnt": 72,
+            "multi_channel_user_cnt": 16,
+            "escalated_user_cnt": 43,
+            "followup_orders": 319,
+            "feedback_received_cnt": 182,
+            "auto_reply_cnt": 250,
+            "manual_reply_cnt": 33,
+            "satisfaction_survey_sent": 144,
+            "satisfaction_survey_responded": 43,
+            "avg_survey_response_time": 27.53
+          }
+        ]
+      },
+      {
+        "name": "item_overdue_total_day",
+        "comment": "逾期统计表",
+        "fields": [
+          {
+            "name": "md_id",
+            "type": "INTEGER",
+            "is_primary": true,
+            "comment": "自增主键ID"
+          },
+          {
+            "name": "busi_time",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "业务时间（yyyy-MM-dd）"
+          },
+          {
+            "name": "type_name",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "类型名称/工单类型"
+          },
+          {
+            "name": "name",
+            "type": "TEXT",
+            "is_primary": false,
+            "comment": "名称/部门区域名称"
+          },
+          {
+            "name": "due_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "当期应办结量"
+          },
+          {
+            "name": "overdue_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "逾期办结量"
+          },
+          {
+            "name": "serious_overdue_cnt",
+            "type": "INTEGER",
+            "is_primary": false,
+            "comment": "严重逾期量"
+          },
+          {
+            "name": "avg_overdue_time",
+            "type": "REAL",
+            "is_primary": false,
+            "comment": "逾期工单平均超时时长（分钟）"
+          }
+        ],
+        "sample_data": [
+          {
+            "md_id": 1,
+            "busi_time": "2022-05-01",
+            "type_name": 1,
+            "name": "一般",
+            "due_cnt": 185,
+            "overdue_cnt": 19,
+            "serious_overdue_cnt": 4,
+            "avg_overdue_time": 48.78
+          },
+          {
+            "md_id": 2,
+            "busi_time": "2022-05-01",
+            "type_name": 1,
+            "name": "紧急",
+            "due_cnt": 157,
+            "overdue_cnt": 39,
+            "serious_overdue_cnt": 8,
+            "avg_overdue_time": 38.01
+          },
+          {
+            "md_id": 3,
+            "busi_time": "2022-05-01",
+            "type_name": 1,
+            "name": "特急",
+            "due_cnt": 191,
+            "overdue_cnt": 79,
+            "serious_overdue_cnt": 53,
+            "avg_overdue_time": 22.75
+          }
+        ]
+      }
+    ]
+  },
+  "terminologies": [
+    {
+      "word": "工单",
+      "description": "用户提交的诉求单"
+    },
+    {
+      "word": "办结",
+      "description": "工单处理完成"
+    },
+    {
+      "word": "满意度",
+      "description": "用户对处理结果的评价"
+    },
+    {
+      "word": "专题",
+      "description": "特定主题的工单分类，如营商环境、疫情防控"
+    },
+    {
+      "word": "逾期",
+      "description": "超过规定时间未办结的工单"
+    },
+    {
+      "word": "回访",
+      "description": "对工单处理结果进行电话回访"
+    }
+  ],
+  "training_examples": [
+    {
+      "question": "查询昨天的工单量",
+      "sql": "SELECT SUM(item_num) FROM items_total_day WHERE busi_time = DATE('now', '-1 day')",
+      "description": "查询昨天所有工单的总数量"
+    },
+    {
+      "question": "最近7天各地区工单量排名",
+      "sql": "SELECT area, SUM(order_cnt) as total FROM sub_area_total_day WHERE busi_time >= DATE('now', '-7 days') GROUP BY area ORDER BY total DESC",
+      "description": "统计最近7天各地区的工单量并排序"
+    }
+  ],
+  "permission_rules": {
+    "row_filters": [],
+    "column_permissions": {}
+  },
+  "chat_history": [],
+  "user_id": 1,
+  "datasource_id": 1
+}

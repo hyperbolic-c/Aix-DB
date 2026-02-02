@@ -1,0 +1,128 @@
+{
+  "excel_tables": 20,
+  "db_tables": 20,
+  "matched_tables": 20,
+  "mismatched_tables": [],
+  "details": [
+    {
+      "table": "area_items_total_day",
+      "excel_fields": 4,
+      "db_fields": 4,
+      "match": true
+    },
+    {
+      "table": "items_total_day",
+      "excel_fields": 5,
+      "db_fields": 5,
+      "match": true
+    },
+    {
+      "table": "accept_src_items_total_day",
+      "excel_fields": 5,
+      "db_fields": 5,
+      "match": true
+    },
+    {
+      "table": "order_type_items_total_day",
+      "excel_fields": 5,
+      "db_fields": 5,
+      "match": true
+    },
+    {
+      "table": "order_status_total_day",
+      "excel_fields": 4,
+      "db_fields": 4,
+      "match": true
+    },
+    {
+      "table": "assess_items_total_day",
+      "excel_fields": 7,
+      "db_fields": 7,
+      "match": true
+    },
+    {
+      "table": "call_overview_total_day",
+      "excel_fields": 7,
+      "db_fields": 7,
+      "match": true
+    },
+    {
+      "table": "call_connect_total_day",
+      "excel_fields": 4,
+      "db_fields": 4,
+      "match": true
+    },
+    {
+      "table": "sub_top_total_day",
+      "excel_fields": 6,
+      "db_fields": 6,
+      "match": true
+    },
+    {
+      "table": "sub_accept_total_day",
+      "excel_fields": 5,
+      "db_fields": 5,
+      "match": true
+    },
+    {
+      "table": "sub_type_total_day",
+      "excel_fields": 8,
+      "db_fields": 8,
+      "match": true
+    },
+    {
+      "table": "sub_area_total_day",
+      "excel_fields": 10,
+      "db_fields": 10,
+      "match": true
+    },
+    {
+      "table": "sub_warn_total_day",
+      "excel_fields": 5,
+      "db_fields": 5,
+      "match": true
+    },
+    {
+      "table": "sub_monitor_total_day",
+      "excel_fields": 9,
+      "db_fields": 9,
+      "match": true
+    },
+    {
+      "table": "sub_assess_total_day",
+      "excel_fields": 10,
+      "db_fields": 10,
+      "match": true
+    },
+    {
+      "table": "item_bmh_total_day",
+      "excel_fields": 8,
+      "db_fields": 8,
+      "match": true
+    },
+    {
+      "table": "item_callback_total_day",
+      "excel_fields": 9,
+      "db_fields": 9,
+      "match": true
+    },
+    {
+      "table": "item_overdue_total_day",
+      "excel_fields": 8,
+      "db_fields": 8,
+      "match": true
+    },
+    {
+      "table": "order_flow_total_day",
+      "excel_fields": 7,
+      "db_fields": 7,
+      "match": true
+    },
+    {
+      "table": "order_full_total_day",
+      "excel_fields": 50,
+      "db_fields": 50,
+      "match": true
+    }
+  ]
+}

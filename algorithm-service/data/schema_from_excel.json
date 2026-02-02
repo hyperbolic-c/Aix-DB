@@ -1,0 +1,1006 @@
+{
+  "database": "final",
+  "db_type": "sqlite",
+  "tables": [
+    {
+      "name": "area_items_total_day",
+      "comment": "区县工单统计日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增id"
+        },
+        {
+          "name": "area_name",
+          "type": "string",
+          "comment": "地区名称"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "total_num",
+          "type": "int",
+          "comment": "统计总数"
+        }
+      ]
+    },
+    {
+      "name": "items_total_day",
+      "comment": "工单统计日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增id"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "satis_num",
+          "type": "int",
+          "comment": "满意数"
+        },
+        {
+          "name": "connect_num",
+          "type": "int",
+          "comment": "接通数"
+        },
+        {
+          "name": "item_num",
+          "type": "int",
+          "comment": "工单量"
+        }
+      ]
+    },
+    {
+      "name": "accept_src_items_total_day",
+      "comment": "工单渠道统计日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增id"
+        },
+        {
+          "name": "accept_src_name",
+          "type": "string",
+          "comment": "来源名称、电话、网站"
+        },
+        {
+          "name": "accept_src_cd",
+          "type": "string",
+          "comment": "工单来源编码"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "total_num",
+          "type": "int",
+          "comment": "统计总数"
+        }
+      ]
+    },
+    {
+      "name": "order_type_items_total_day",
+      "comment": "工单诉求类型统计日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增id"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "order_type_name",
+          "type": "string",
+          "comment": "诉求类型名称eg咨询、投诉"
+        },
+        {
+          "name": "order_type_cd",
+          "type": "string",
+          "comment": "诉求类型编码"
+        },
+        {
+          "name": "total_num",
+          "type": "int",
+          "comment": "统计总数"
+        }
+      ]
+    },
+    {
+      "name": "order_status_total_day",
+      "comment": "工单状态日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "order_status",
+          "type": "string",
+          "comment": "工单状态"
+        },
+        {
+          "name": "order_cnt",
+          "type": "int",
+          "comment": "工单量"
+        }
+      ]
+    },
+    {
+      "name": "assess_items_total_day",
+      "comment": "效能监察统计日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增id"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "dept_type",
+          "type": "int",
+          "comment": "1市直部门，2县区"
+        },
+        {
+          "name": "item_num",
+          "type": "int",
+          "comment": "已经办结工单"
+        },
+        {
+          "name": "complete_num",
+          "type": "int",
+          "comment": "按时办结量"
+        },
+        {
+          "name": "complete_avg_time",
+          "type": "int",
+          "comment": "平均时长"
+        },
+        {
+          "name": "satis_num",
+          "type": "int",
+          "comment": "满意数"
+        }
+      ]
+    },
+    {
+      "name": "call_overview_total_day",
+      "comment": "话务概况日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "satisfaction_cnt",
+          "type": "int",
+          "comment": "满意数"
+        },
+        {
+          "name": "unsatisfaction_cnt",
+          "type": "int",
+          "comment": "不满意"
+        },
+        {
+          "name": "reply_on_time_cnt",
+          "type": "int",
+          "comment": "即时答复"
+        },
+        {
+          "name": "call_cnt",
+          "type": "int",
+          "comment": "人工话务总量"
+        },
+        {
+          "name": "connect_cnt",
+          "type": "int",
+          "comment": "人工接通总量"
+        }
+      ]
+    },
+    {
+      "name": "call_connect_total_day",
+      "comment": "话务接通情况日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "hand_up_type",
+          "type": "string",
+          "comment": "挂断类型（（1：在欢迎语或IVR中挂断 2：在队列排队中挂断 3：在通话中或通话结束后挂断））"
+        },
+        {
+          "name": "hand_up_cnt",
+          "type": "int",
+          "comment": "数量"
+        }
+      ]
+    },
+    {
+      "name": "sub_top_total_day",
+      "comment": "专题事项热点TOP5日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "sub_name",
+          "type": "string",
+          "comment": "专题名称"
+        },
+        {
+          "name": "top_name",
+          "type": "string",
+          "comment": "事项名称"
+        },
+        {
+          "name": "satisfaction_cnt",
+          "type": "int",
+          "comment": "满意数"
+        },
+        {
+          "name": "top_cnt",
+          "type": "int",
+          "comment": "事项总数"
+        }
+      ]
+    },
+    {
+      "name": "sub_accept_total_day",
+      "comment": "专题工单来源分析",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "sub_name",
+          "type": "string",
+          "comment": "专题名称"
+        },
+        {
+          "name": "accept_name",
+          "type": "string",
+          "comment": "诉求来源"
+        },
+        {
+          "name": "accept_cnt",
+          "type": "int",
+          "comment": "数据量"
+        }
+      ]
+    },
+    {
+      "name": "sub_type_total_day",
+      "comment": "专题工单类型分析",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "sub_name",
+          "type": "string",
+          "comment": "专题名称"
+        },
+        {
+          "name": "type_name",
+          "type": "string",
+          "comment": "工单类型"
+        },
+        {
+          "name": "type_cnt",
+          "type": "int",
+          "comment": "工单量"
+        },
+        {
+          "name": "finish_cnt",
+          "type": "int",
+          "comment": "按时办结量"
+        },
+        {
+          "name": "satisfaction_cnt",
+          "type": "int",
+          "comment": "工单满意数"
+        },
+        {
+          "name": "avg_handler_time",
+          "type": "double",
+          "comment": "平均处理时长"
+        }
+      ]
+    },
+    {
+      "name": "sub_area_total_day",
+      "comment": "专题区市县工单日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "sub_name",
+          "type": "string",
+          "comment": "专题名称"
+        },
+        {
+          "name": "area",
+          "type": "string",
+          "comment": "区市县单位"
+        },
+        {
+          "name": "order_cnt",
+          "type": "int",
+          "comment": "工单量"
+        },
+        {
+          "name": "finish_cnt",
+          "type": "int",
+          "comment": "办结量"
+        },
+        {
+          "name": "avg_handler_time",
+          "type": "double",
+          "comment": "平均处理时长"
+        },
+        {
+          "name": "satisfaction_cnt",
+          "type": "int",
+          "comment": "工单满意数"
+        },
+        {
+          "name": "negative_cnt",
+          "type": "int",
+          "comment": "工单差评数"
+        },
+        {
+          "name": "reply_on_time_cnt",
+          "type": "int",
+          "comment": "按时回复数"
+        }
+      ]
+    },
+    {
+      "name": "sub_warn_total_day",
+      "comment": "专题工单监察分析日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "sub_name",
+          "type": "string",
+          "comment": "专题名称"
+        },
+        {
+          "name": "red_cnt",
+          "type": "int",
+          "comment": "红牌工单量"
+        },
+        {
+          "name": "yellow_cnt",
+          "type": "int",
+          "comment": "黄牌工单量"
+        }
+      ]
+    },
+    {
+      "name": "sub_monitor_total_day",
+      "comment": "专题办件效能分析日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "sub_name",
+          "type": "string",
+          "comment": "专题名称"
+        },
+        {
+          "name": "type_name",
+          "type": "string",
+          "comment": "排行类型（1市直部门，2区市县）"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "comment": "名称（单位名称、区县名称）"
+        },
+        {
+          "name": "item_num",
+          "type": "int",
+          "comment": "工单量"
+        },
+        {
+          "name": "complete_cnt",
+          "type": "int",
+          "comment": "按时办结量"
+        },
+        {
+          "name": "avg_handler_time",
+          "type": "int",
+          "comment": "平均处理时长"
+        },
+        {
+          "name": "satisfaction_cnt",
+          "type": "int",
+          "comment": "服务满意数"
+        }
+      ]
+    },
+    {
+      "name": "sub_assess_total_day",
+      "comment": "专题工单评价分析日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "sub_name",
+          "type": "string",
+          "comment": "专题名称"
+        },
+        {
+          "name": "assess_cnt",
+          "type": "int",
+          "comment": "办结评价数"
+        },
+        {
+          "name": "satisfaction_one_cnt",
+          "type": "int",
+          "comment": "非常不满意"
+        },
+        {
+          "name": "satisfaction_two_cnt",
+          "type": "int",
+          "comment": "不满意"
+        },
+        {
+          "name": "satisfaction_three_cnt",
+          "type": "int",
+          "comment": "基本满意"
+        },
+        {
+          "name": "satisfaction_four_cnt",
+          "type": "int",
+          "comment": "满意"
+        },
+        {
+          "name": "satisfaction_five_cnt",
+          "type": "int",
+          "comment": "非常满意"
+        },
+        {
+          "name": "satisfaction_zero_cnt",
+          "type": "int",
+          "comment": "未评价"
+        }
+      ]
+    },
+    {
+      "name": "item_bmh_total_day",
+      "comment": "便民汇统计日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增id"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "reply_total",
+          "type": "int",
+          "comment": "回复总数"
+        },
+        {
+          "name": "receive_cnt",
+          "type": "int",
+          "comment": "收到工单量"
+        },
+        {
+          "name": "handle_cnt",
+          "type": "int",
+          "comment": "职能局处理"
+        },
+        {
+          "name": "hot_line_handle_cnt",
+          "type": "int",
+          "comment": "热线平台处理"
+        },
+        {
+          "name": "reply_on_time_cnt",
+          "type": "double",
+          "comment": "按时回复数"
+        },
+        {
+          "name": "chan_type",
+          "type": "int",
+          "comment": "类型（1总体情况，2国办）"
+        }
+      ]
+    },
+    {
+      "name": "item_callback_total_day",
+      "comment": "工单回访情况日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "callback_type",
+          "type": "int",
+          "comment": "回访类型：1人工回访，2短信回访，3智能语音"
+        },
+        {
+          "name": "callback_cnt",
+          "type": "int",
+          "comment": "回访发起量"
+        },
+        {
+          "name": "success_cnt",
+          "type": "int",
+          "comment": "回访成功量"
+        },
+        {
+          "name": "satisfaction_cnt",
+          "type": "int",
+          "comment": "回访满意量"
+        },
+        {
+          "name": "dissatisfaction_cnt",
+          "type": "int",
+          "comment": "回访不满意量"
+        },
+        {
+          "name": "no_evaluate_cnt",
+          "type": "int",
+          "comment": "未评价量"
+        },
+        {
+          "name": "avg_callback_time",
+          "type": "int",
+          "comment": "回访平均通话时长（分钟）"
+        }
+      ]
+    },
+    {
+      "name": "item_overdue_total_day",
+      "comment": "工单逾期分析日表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_time",
+          "type": "string",
+          "comment": "业务时间"
+        },
+        {
+          "name": "type_name",
+          "type": "int",
+          "comment": "维度：1.工单紧急程度，2.工单处理阶段"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "comment": "紧急程度、处理阶段"
+        },
+        {
+          "name": "due_cnt",
+          "type": "int",
+          "comment": "当期应办结量"
+        },
+        {
+          "name": "overdue_cnt",
+          "type": "int",
+          "comment": "逾期办结量"
+        },
+        {
+          "name": "serious_overdue_cnt",
+          "type": "int",
+          "comment": "严重逾期量"
+        },
+        {
+          "name": "avg_overdue_time",
+          "type": "int",
+          "comment": "逾期工单平均超时时长（分钟）"
+        }
+      ]
+    },
+    {
+      "name": "order_flow_total_day",
+      "comment": "工单流转分析表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_date",
+          "type": "string",
+          "comment": "统计日期"
+        },
+        {
+          "name": "dept_id",
+          "type": "string",
+          "comment": "部门ID"
+        },
+        {
+          "name": "dept_name",
+          "type": "string",
+          "comment": "部门名称"
+        },
+        {
+          "name": "flow_stage",
+          "type": "string",
+          "comment": "工单状态"
+        },
+        {
+          "name": "total_cnt",
+          "type": "int",
+          "comment": "当日进入该环节的工单总数"
+        },
+        {
+          "name": "rollback_cnt",
+          "type": "int",
+          "comment": "回退工单数"
+        }
+      ]
+    },
+    {
+      "name": "order_full_total_day",
+      "comment": "工单业务全景表",
+      "fields": [
+        {
+          "name": "md_id",
+          "type": "int",
+          "comment": "自增主键"
+        },
+        {
+          "name": "busi_date",
+          "type": "string",
+          "comment": "统计日期"
+        },
+        {
+          "name": "region_name",
+          "type": "string",
+          "comment": "地区名称（市/县/镇）"
+        },
+        {
+          "name": "org_level",
+          "type": "int",
+          "comment": "组织层级（1市级，2县级，3镇级）"
+        },
+        {
+          "name": "total_orders",
+          "type": "int",
+          "comment": "当日提交的总工单量"
+        },
+        {
+          "name": "process_orders",
+          "type": "int",
+          "comment": "已处理工单量"
+        },
+        {
+          "name": "pending_orders",
+          "type": "int",
+          "comment": "未处理工单量"
+        },
+        {
+          "name": "night_orders",
+          "type": "int",
+          "comment": "夜间工单量"
+        },
+        {
+          "name": "cancelled_orders",
+          "type": "int",
+          "comment": "用户取消工单量"
+        },
+        {
+          "name": "avg_response_time",
+          "type": "double",
+          "comment": "平均响应时间（分钟）"
+        },
+        {
+          "name": "avg_finish_time",
+          "type": "double",
+          "comment": "平均办结时长（分钟）"
+        },
+        {
+          "name": "first_contact_resolved",
+          "type": "int",
+          "comment": "一次接触解决工单数"
+        },
+        {
+          "name": "escalation_cnt",
+          "type": "int",
+          "comment": "升级处理工单数"
+        },
+        {
+          "name": "repeat_cnt",
+          "type": "int",
+          "comment": "重复工单数"
+        },
+        {
+          "name": "online_channel_cnt",
+          "type": "int",
+          "comment": "在线渠道工单数"
+        },
+        {
+          "name": "phone_channel_cnt",
+          "type": "int",
+          "comment": "电话渠道工单数"
+        },
+        {
+          "name": "email_channel_cnt",
+          "type": "int",
+          "comment": "邮件渠道工单数"
+        },
+        {
+          "name": "mobile_app_cnt",
+          "type": "int",
+          "comment": "App 提交工单数"
+        },
+        {
+          "name": "alert_timeout_sign_orders",
+          "type": "int",
+          "comment": "超时未签工单数"
+        },
+        {
+          "name": "alert_timeout_process_orders",
+          "type": "int",
+          "comment": "超时未办工单数"
+        },
+        {
+          "name": "alert_repeat_exceed_orders",
+          "type": "int",
+          "comment": "回退超次工单数"
+        },
+        {
+          "name": "alert_sentiment_keyword_orders",
+          "type": "int",
+          "comment": "包含关键词工单数"
+        },
+        {
+          "name": "high_priority_cnt",
+          "type": "int",
+          "comment": "高优先级工单数"
+        },
+        {
+          "name": "medium_priority_cnt",
+          "type": "int",
+          "comment": "中优先级工单数"
+        },
+        {
+          "name": "low_priority_cnt",
+          "type": "int",
+          "comment": "低优先级工单数"
+        },
+        {
+          "name": "overdue_pct",
+          "type": "double",
+          "comment": "超期占比（%）"
+        },
+        {
+          "name": "satisfaction_score",
+          "type": "double",
+          "comment": "综合满意度评分（30-100）"
+        },
+        {
+          "name": "handler_cnt",
+          "type": "int",
+          "comment": "当日处理人员数"
+        },
+        {
+          "name": "bot_handled_cnt",
+          "type": "int",
+          "comment": "自动处理工单数"
+        },
+        {
+          "name": "handover_cnt",
+          "type": "int",
+          "comment": "转交工单数"
+        },
+        {
+          "name": "top_keyword_1",
+          "type": "string",
+          "comment": "热点词汇1"
+        },
+        {
+          "name": "top_keyword_1_cnt",
+          "type": "int",
+          "comment": "热点词汇1出现数量"
+        },
+        {
+          "name": "top_keyword_2",
+          "type": "string",
+          "comment": "热点词汇2"
+        },
+        {
+          "name": "top_keyword_2_cnt",
+          "type": "int",
+          "comment": "热点词汇2出现数量"
+        },
+        {
+          "name": "top_keyword_3",
+          "type": "string",
+          "comment": "热点词汇3"
+        },
+        {
+          "name": "top_keyword_3_cnt",
+          "type": "int",
+          "comment": "热点词汇3出现数量"
+        },
+        {
+          "name": "early_response_orders",
+          "type": "int",
+          "comment": "快速响应工单数"
+        },
+        {
+          "name": "late_response_orders",
+          "type": "int",
+          "comment": "延迟响应工单数"
+        },
+        {
+          "name": "avg_wait_time_user",
+          "type": "double",
+          "comment": "用户等待平均时间（分钟）"
+        },
+        {
+          "name": "repeat_user_cnt",
+          "type": "int",
+          "comment": "当日重复提交工单用户数"
+        },
+        {
+          "name": "first_time_user_cnt",
+          "type": "int",
+          "comment": "当日首次提交工单用户数"
+        },
+        {
+          "name": "multi_channel_user_cnt",
+          "type": "int",
+          "comment": "使用多渠道提交的用户数"
+        },
+        {
+          "name": "escalated_user_cnt",
+          "type": "int",
+          "comment": "升级工单用户数"
+        },
+        {
+          "name": "followup_orders",
+          "type": "int",
+          "comment": "需回访工单数"
+        },
+        {
+          "name": "feedback_received_cnt",
+          "type": "int",
+          "comment": "收到用户反馈数"
+        },
+        {
+          "name": "auto_reply_cnt",
+          "type": "int",
+          "comment": "自动回复工单数"
+        },
+        {
+          "name": "manual_reply_cnt",
+          "type": "int",
+          "comment": "人工回复工单数"
+        },
+        {
+          "name": "satisfaction_survey_sent",
+          "type": "int",
+          "comment": "发送满意度调查工单数"
+        },
+        {
+          "name": "satisfaction_survey_responded",
+          "type": "int",
+          "comment": "回收满意度调查工单数"
+        },
+        {
+          "name": "avg_survey_response_time",
+          "type": "double",
+          "comment": "平均满意度反馈时间（分钟）"
+        }
+      ]
+    }
+  ]
+}
