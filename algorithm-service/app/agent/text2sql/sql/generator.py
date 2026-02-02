@@ -1,6 +1,6 @@
 """
 SQL 生成节点
-使用模板系统生成 SQL 语句
+使用模板系统生成 SQL 语句，集成问题改写、向量精排和验证
 """
 
 import json
@@ -15,6 +15,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from agent.text2sql.state.agent_state import AgentState
 from agent.text2sql.template.prompt_builder import PromptBuilder
 from agent.text2sql.template.schema_formatter import format_schema_to_m_schema, get_database_engine_info
+from agent.text2sql.rewrite import rewrite_question
+from agent.text2sql.ranking import rank_candidates
+from agent.text2sql.validation import validate_sql
 from common.llm_util import get_llm
 from model.db_connection_pool import get_db_pool
 from model.datasource_models import Datasource
@@ -34,6 +37,22 @@ def sql_generate(state: AgentState) -> AgentState:
         更新后的 state
     """
     try:
+        # 1. 问题改写（轻量级）
+        original_question = state["user_query"]
+        try:
+            rewritten_question = rewrite_question(original_question)
+            if rewritten_question != original_question:
+                logger.info(f"问题改写: '{original_question}' -> '{rewritten_question}'")
+                state["rewritten_query"] = rewritten_question
+            else:
+                state["rewritten_query"] = original_question
+        except Exception as e:
+            logger.warning(f"问题改写失败: {e}，使用原始问题")
+            state["rewritten_query"] = original_question
+        
+        # 使用改写后的问题
+        query_for_generation = state["rewritten_query"]
+        
         # 获取数据库信息
         db_info = state.get("db_info", {})
         if not db_info:
@@ -134,40 +153,85 @@ def sql_generate(state: AgentState) -> AgentState:
         # 使用 PromptBuilder 构建提示词
         prompt_builder = PromptBuilder()
         
-        # RAG 增强检索：向量检索 + 传统检索
+        # RAG 增强检索：向量检索 + 向量精排
         terminologies = ""
         data_training = ""
         
-        try:
-            # 1. 向量检索：Schema、SQL示例
-            from agent.text2sql.rag.unified_retriever import retrieve_all
-            
-            vector_results = retrieve_all(
-                question=state["user_query"],
-                top_k=5,
-                datasource_id=datasource_id,
-                datasource_type=db_type
-            )
-            
-            # 将向量检索结果转换为文本
-            if not vector_results.is_empty():
-                context = vector_results.to_prompt_context()
+        # 2. 向量精排：对后端发送的候选内容进行精排
+        candidates = state.get("candidates", {})
+        if candidates:
+            try:
+                ranked = rank_candidates(
+                    question=query_for_generation,
+                    terminologies=candidates.get("terminologies", []),
+                    sql_examples=candidates.get("sql_examples", []),
+                    top_k_terms=5,
+                    top_k_examples=3
+                )
                 
-                # 使用向量检索的Schema（如果可用）
-                if context.get("schema_text"):
-                    # 将向量检索的Schema追加到原有Schema
-                    schema_str += "\n\n/* 向量检索补充的Schema */\n" + context["schema_text"]
-                    logger.debug("已添加向量检索的Schema信息")
+                # 使用精排后的术语
+                if ranked["terminologies"]:
+                    term_texts = []
+                    for item in ranked["terminologies"]:
+                        term = item.item
+                        term_texts.append(f"{term['term']}: {term.get('description', '')}")
+                    terminologies = "\n".join(term_texts)
+                    logger.info(f"向量精排后使用 {len(ranked['terminologies'])} 个术语")
                 
-                # 使用向量检索的SQL示例
-                if context.get("example_text"):
-                    data_training = context["example_text"]
-                    logger.debug("已使用向量检索的SQL示例")
-            
-            logger.info("向量检索完成")
-            
-        except Exception as e:
-            logger.warning(f"向量检索失败: {e}，降级到传统检索")
+                # 使用精排后的SQL示例
+                if ranked["sql_examples"]:
+                    example_texts = []
+                    for item in ranked["sql_examples"]:
+                        ex = item.item
+                        example_texts.append(f"问题: {ex['question']}\nSQL: {ex['sql']}")
+                    data_training = "\n\n".join(example_texts)
+                    logger.info(f"向量精排后使用 {len(ranked['sql_examples'])} 个SQL示例")
+                
+            except Exception as e:
+                logger.warning(f"向量精排失败: {e}，使用原始候选内容")
+                # 降级：直接使用候选内容
+                if candidates.get("terminologies"):
+                    term_texts = []
+                    for term in candidates["terminologies"][:5]:
+                        term_texts.append(f"{term['term']}: {term.get('description', '')}")
+                    terminologies = "\n".join(term_texts)
+                
+                if candidates.get("sql_examples"):
+                    example_texts = []
+                    for ex in candidates["sql_examples"][:3]:
+                        example_texts.append(f"问题: {ex['question']}\nSQL: {ex['sql']}")
+                    data_training = "\n\n".join(example_texts)
+        
+        # 3. 如果精排没有结果，使用向量检索作为补充
+        if not terminologies or not data_training:
+            try:
+                from agent.text2sql.rag.unified_retriever import retrieve_all
+                
+                vector_results = retrieve_all(
+                    question=query_for_generation,
+                    top_k=5,
+                    datasource_id=datasource_id,
+                    datasource_type=db_type
+                )
+                
+                # 将向量检索结果转换为文本
+                if not vector_results.is_empty():
+                    context = vector_results.to_prompt_context()
+                    
+                    # 使用向量检索的Schema（如果可用）
+                    if context.get("schema_text"):
+                        schema_str += "\n\n/* 向量检索补充的Schema */\n" + context["schema_text"]
+                        logger.debug("已添加向量检索的Schema信息")
+                    
+                    # 使用向量检索的SQL示例（如果精排没有结果）
+                    if not data_training and context.get("example_text"):
+                        data_training = context["example_text"]
+                        logger.debug("已使用向量检索的SQL示例")
+                
+                logger.info("向量检索完成")
+                
+            except Exception as e:
+                logger.warning(f"向量检索失败: {e}")
         
         # 2. 传统检索（作为补充或降级）
         if not data_training:
@@ -308,9 +372,38 @@ def sql_generate(state: AgentState) -> AgentState:
             if isinstance(sql, str):
                 # json.loads 已经处理了转义字符，但如果 SQL 中包含字面量 \n，需要额外处理
                 # 这里直接使用解析后的字符串即可，因为 json.loads 已经正确处理了转义
-                state["generated_sql"] = sql
+                generated_sql = sql
             else:
-                state["generated_sql"] = str(sql) if sql else ""
+                generated_sql = str(sql) if sql else ""
+            
+            # 4. SQL验证
+            try:
+                validation = validate_sql(
+                    question=query_for_generation,
+                    sql=generated_sql,
+                    schema=db_info,
+                    db_type=db_type
+                )
+                
+                state["sql_validation"] = {
+                    "valid": validation.valid,
+                    "score": validation.score,
+                    "feedback": validation.feedback,
+                    "passed_checks": validation.passed_checks,
+                    "failed_checks": [f["check"] for f in validation.failed_checks]
+                }
+                
+                if validation.valid:
+                    logger.info(f"SQL验证通过（得分: {validation.score:.2f}）")
+                else:
+                    logger.warning(f"SQL验证未通过（得分: {validation.score:.2f}）: {validation.feedback}")
+                
+                # 即使验证未通过，也使用生成的SQL（因为验证只是辅助）
+                state["generated_sql"] = generated_sql
+                
+            except Exception as e:
+                logger.warning(f"SQL验证失败: {e}")
+                state["generated_sql"] = generated_sql
             
             chart_type = result.get("chart-type", result.get("chart_type", "table"))
             state["chart_type"] = chart_type
