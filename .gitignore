@@ -69,3 +69,5 @@ examples/
 !config/**/*.py
 !constants/
 !constants/**/*.py
+
+target_db/
