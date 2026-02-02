@@ -585,3 +585,16 @@ class ChatStorage:
             cursor.execute("DELETE FROM sql_examples WHERE id = ?", (example_id,))
             conn.commit()
             return cursor.rowcount > 0
+    
+    def list_terminologies_by_datasource(
+        self,
+        datasource_id: int,
+        limit: int = 100
+    ) -> List[Terminology]:
+        """
+        按数据源列出术语
+        注意：当前terminologies表没有datasource_id字段，
+        这里假设通过category或其他方式关联，或者返回所有术语
+        """
+        # 目前返回所有术语，后续可以添加datasource_id关联
+        return self.list_terminologies(limit=limit)
