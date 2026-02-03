@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算法测试框架 | Test Framework</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="#2563eb"/>
+                        <path d="M8 16L14 22L24 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="logo-text">Test Framework</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">服务在线</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="section-title">算法服务配置</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">服务地址</label>
+                        <input type="text" class="form-input" id="serviceUrl" value="http://localhost:8002" placeholder="http://localhost:8002">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Schema 加载模式</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="schemaMode" value="primary">
+                                <span class="radio-label">主表 (1个)</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="schemaMode" value="related" checked>
+                                <span class="radio-label">相关表 (4个)</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="schemaMode" value="all">
+                                <span class="radio-label">所有表 (20个)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="section-title">Gold 用例</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">用例 ID</label>
+                        <div class="input-with-button">
+                            <input type="number" class="form-input" id="caseIdInput" placeholder="输入用例编号 (1-800)" min="1">
+                            <button class="btn btn-secondary" id="loadCaseBtn">加载</button>
+                        </div>
+                    </div>
+
+                    <div class="case-info" id="caseInfo" style="display: none;">
+                        <div class="info-row">
+                            <span class="info-label">ID</span>
+                            <span class="info-value" id="caseId">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">难度</span>
+                            <span class="info-value">
+                                <span class="badge" id="caseLevel">-</span>
+                            </span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">主表</span>
+                            <span class="info-value" id="caseTable">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-actions">
+                    <button class="btn btn-primary" id="runTestBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M3 2L13 8L3 14V2Z" fill="currentColor"/>
+                        </svg>
+                        运行测试
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 3V1L5 4L8 7V5C10.2091 5 12 6.79086 12 9C12 11.2091 10.2091 13 8 13C5.79086 13 4 11.2091 4 9H2C2 12.3137 4.68629 16 8 16C11.3137 16 14 13.3137 14 10C14 6.68629 11.3137 3 8 3Z" fill="currentColor"/>
+                        </svg>
+                        重置
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Input Section -->
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">问题输入</h2>
+                        <span class="section-subtitle">输入自然语言问题或选择 Gold 用例</span>
+                    </div>
+                    <div class="input-area">
+                        <textarea class="text-input" id="questionInput" rows="3" placeholder="例如：查询2024年1月21日当天，所有类型的回访发起总量分别是多少？"></textarea>
+                    </div>
+                </section>
+
+                <!-- Results Section -->
+                <section class="section results-section" id="resultsSection" style="display: none;">
+                    <div class="section-header">
+                        <h2 class="section-title">测试结果</h2>
+                        <div class="result-actions">
+                            <button class="btn-icon" id="copySqlBtn" title="复制 SQL">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M4 4V2C4 1.44772 4.44772 1 5 1H13C13.5523 1 14 1.44772 14 2V10C14 10.5523 13.5523 11 13 11H11" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M2 5H10C10.5523 5 11 5.44772 11 6V14C11 14.5523 10.5523 15 10 15H2C1.44772 15 1 14.5523 1 14V6C1 5.44772 1.44772 5 2 5Z" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <button class="tab active" data-tab="sql">SQL</button>
+                        <button class="tab" data-tab="execution">执行结果</button>
+                        <button class="tab" data-tab="chart">图表配置</button>
+                        <button class="tab" data-tab="summary">总结</button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <div class="tab-panel active" id="sqlPanel">
+                            <pre class="code-block"><code id="sqlCode">-- SQL 将显示在这里</code></pre>
+                        </div>
+                        <div class="tab-panel" id="executionPanel">
+                            <div class="execution-stats" id="executionStats">
+                                <div class="stat-item">
+                                    <span class="stat-label">返回行数</span>
+                                    <span class="stat-value" id="rowCount">-</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">执行时间</span>
+                                    <span class="stat-value" id="execTime">-</span>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="data-table" id="dataTable">
+                                    <thead></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-panel" id="chartPanel">
+                            <pre class="code-block"><code id="chartCode">// 图表配置将显示在这里</code></pre>
+                        </div>
+                        <div class="tab-panel" id="summaryPanel">
+                            <div class="summary-text" id="summaryText">总结将显示在这里</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Logs Section -->
+                <section class="section logs-section">
+                    <div class="section-header">
+                        <h2 class="section-title">运行日志</h2>
+                        <button class="btn-text" id="clearLogsBtn">清空</button>
+                    </div>
+                    <div class="logs-container" id="logsContainer">
+                        <div class="log-empty">暂无日志...</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <span class="loading-text">正在测试...</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
