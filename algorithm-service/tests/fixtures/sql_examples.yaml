@@ -1,0 +1,193 @@
+# SQL示例定义
+# 用于填充测试请求体中的training_examples字段
+
+sql_examples:
+  # ========== 基础查询示例 ==========
+  - question: "查询昨天的销售额"
+    sql: "SELECT SUM(amount) FROM orders WHERE DATE(order_date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)"
+    description: "统计昨天所有订单的总金额"
+    category: "time_based"
+    difficulty: 1
+    
+  - question: "查询最近7天的订单量"
+    sql: "SELECT COUNT(*) FROM orders WHERE order_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)"
+    description: "统计最近7天的订单总数"
+    category: "time_based"
+    difficulty: 1
+    
+  - question: "查询每个用户的订单数量"
+    sql: "SELECT user_id, COUNT(*) as order_count FROM orders GROUP BY user_id"
+    description: "按用户分组统计订单数量"
+    category: "group_by"
+    difficulty: 1
+    
+  - question: "查询订单金额最大的前10个订单"
+    sql: "SELECT * FROM orders ORDER BY amount DESC LIMIT 10"
+    description: "按金额排序取前10"
+    category: "top_n"
+    difficulty: 1
+    
+  # ========== 分组聚合示例 ==========
+  - question: "查询每个品类的商品数量和平均价格"
+    sql: "SELECT category_id, COUNT(*) as product_count, AVG(price) as avg_price FROM products GROUP BY category_id"
+    description: "按品类分组统计数量和均价"
+    category: "group_by"
+    difficulty: 2
+    
+  - question: "查询每天的订单量和销售额"
+    sql: "SELECT DATE(order_date) as day, COUNT(*) as order_count, SUM(amount) as total_amount FROM orders GROUP BY DATE(order_date)"
+    description: "按天统计订单量和销售额"
+    category: "time_based"
+    difficulty: 2
+    
+  - question: "查询每个地区的用户数量"
+    sql: "SELECT region, COUNT(DISTINCT user_id) as user_count FROM users GROUP BY region"
+    description: "按地区统计用户数"
+    category: "group_by"
+    difficulty: 2
+    
+  # ========== 占比计算示例 ==========
+  - question: "查询各渠道订单占比"
+    sql: "SELECT channel, COUNT(*) as cnt, ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) as percentage FROM orders GROUP BY channel"
+    description: "计算各渠道订单占比"
+    category: "percentage"
+    difficulty: 3
+    
+  - question: "查询各状态订单占比"
+    sql: "SELECT status, COUNT(*) as cnt, ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM orders), 2) as percentage FROM orders GROUP BY status"
+    description: "使用子查询计算占比"
+    category: "percentage"
+    difficulty: 3
+    
+  # ========== 时间处理示例 ==========
+  - question: "查询本月订单量"
+    sql: "SELECT COUNT(*) FROM orders WHERE DATE_FORMAT(order_date, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')"
+    description: "筛选本月数据"
+    category: "time_based"
+    difficulty: 2
+    
+  - question: "查询上月订单量"
+    sql: "SELECT COUNT(*) FROM orders WHERE DATE_FORMAT(order_date, '%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m')"
+    description: "筛选上月数据"
+    category: "time_based"
+    difficulty: 2
+    
+  - question: "查询本周订单量"
+    sql: "SELECT COUNT(*) FROM orders WHERE YEARWEEK(order_date) = YEARWEEK(NOW())"
+    description: "筛选本周数据"
+    category: "time_based"
+    difficulty: 2
+    
+  # ========== 联表查询示例 ==========
+  - question: "查询每个用户的用户名和订单数量"
+    sql: "SELECT u.username, COUNT(o.id) as order_count FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.id, u.username"
+    description: "用户表和订单表联表查询"
+    category: "join"
+    difficulty: 2
+    
+  - question: "查询每个订单的订单号和商品名称"
+    sql: "SELECT o.order_no, p.product_name FROM orders o JOIN order_items oi ON o.id = oi.order_id JOIN products p ON oi.product_id = p.id"
+    description: "多表联表查询"
+    category: "join"
+    difficulty: 3
+    
+  - question: "查询没有订单的用户"
+    sql: "SELECT u.* FROM users u LEFT JOIN orders o ON u.id = o.user_id WHERE o.id IS NULL"
+    description: "使用LEFT JOIN查找无订单用户"
+    category: "join"
+    difficulty: 3
+    
+  # ========== 条件筛选示例 ==========
+  - question: "查询金额大于1000的订单"
+    sql: "SELECT * FROM orders WHERE amount > 1000"
+    description: "简单条件筛选"
+    category: "filter"
+    difficulty: 1
+    
+  - question: "查询金额在100到500之间的订单"
+    sql: "SELECT * FROM orders WHERE amount BETWEEN 100 AND 500"
+    description: "范围条件筛选"
+    category: "filter"
+    difficulty: 1
+    
+  - question: "查询状态为已完成或已取消的订单"
+    sql: "SELECT * FROM orders WHERE status IN ('completed', 'cancelled')"
+    description: "多值条件筛选"
+    category: "filter"
+    difficulty: 1
+    
+  # ========== 排序限制示例 ==========
+  - question: "查询最新的10个订单"
+    sql: "SELECT * FROM orders ORDER BY order_date DESC LIMIT 10"
+    description: "按时间排序取最新"
+    category: "top_n"
+    difficulty: 1
+    
+  - question: "查询金额最大的前5个用户"
+    sql: "SELECT user_id, SUM(amount) as total_amount FROM orders GROUP BY user_id ORDER BY total_amount DESC LIMIT 5"
+    description: "分组后排序取前N"
+    category: "top_n"
+    difficulty: 2
+    
+  - question: "查询第二页订单（每页20条）"
+    sql: "SELECT * FROM orders ORDER BY id DESC LIMIT 20 OFFSET 20"
+    description: "分页查询"
+    category: "pagination"
+    difficulty: 2
+    
+  # ========== 复杂计算示例 ==========
+  - question: "查询每个用户的平均订单金额和消费频次"
+    sql: "SELECT user_id, AVG(amount) as avg_amount, COUNT(*) as frequency FROM orders GROUP BY user_id"
+    description: "多指标统计"
+    category: "calculation"
+    difficulty: 2
+    
+  - question: "查询订单金额的中位数"
+    sql: "SELECT AVG(amount) as median FROM (SELECT amount, ROW_NUMBER() OVER (ORDER BY amount) as rn, COUNT(*) OVER() as cnt FROM orders) t WHERE rn IN (FLOOR((cnt+1)/2), CEIL((cnt+1)/2))"
+    description: "计算中位数"
+    category: "calculation"
+    difficulty: 4
+    
+  - question: "查询环比增长"
+    sql: "SELECT this_month, last_month, (this_month - last_month) * 100.0 / last_month as growth_rate FROM (...)"
+    description: "环比计算"
+    category: "calculation"
+    difficulty: 4
+    
+  # ========== 回访相关示例 ==========
+  - question: "查询各回访类型的回访发起量"
+    sql: "SELECT callback_type, SUM(callback_cnt) as total_cnt FROM item_callback_total_day GROUP BY callback_type"
+    description: "按回访类型统计"
+    category: "group_by"
+    difficulty: 2
+    
+  - question: "查询各回访类型的回访成功率"
+    sql: "SELECT callback_type, ROUND(SUM(success_cnt) * 100.0 / SUM(callback_cnt), 2) as success_rate FROM item_callback_total_day GROUP BY callback_type"
+    description: "计算回访成功率"
+    category: "percentage"
+    difficulty: 3
+    
+  - question: "查询回访发起量TOP5的地区"
+    sql: "SELECT region_name, SUM(callback_cnt) as total_cnt FROM item_callback_total_day GROUP BY region_name ORDER BY total_cnt DESC LIMIT 5"
+    description: "回访量地区排名"
+    category: "top_n"
+    difficulty: 2
+    
+  # ========== 工单相关示例 ==========
+  - question: "查询各工单状态的工单量"
+    sql: "SELECT status, COUNT(*) as ticket_count FROM tickets GROUP BY status"
+    description: "按状态统计工单"
+    category: "group_by"
+    difficulty: 1
+    
+  - question: "查询各处理人的平均处理时长"
+    sql: "SELECT handler_id, AVG(processing_time) as avg_time FROM tickets WHERE status = 'completed' GROUP BY handler_id"
+    description: "计算平均处理时长"
+    category: "calculation"
+    difficulty: 2
+    
+  - question: "查询逾期工单量"
+    sql: "SELECT COUNT(*) FROM tickets WHERE due_date < NOW() AND status != 'completed'"
+    description: "筛选逾期工单"
+    category: "filter"
+    difficulty: 2

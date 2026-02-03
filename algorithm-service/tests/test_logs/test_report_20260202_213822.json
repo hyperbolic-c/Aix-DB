@@ -1,0 +1,57 @@
+{
+  "total": 1,
+  "success": 1,
+  "failed": 0,
+  "results": [
+    {
+      "case_id": 1,
+      "question": "查询2024年1月21日当天，所有类型的回访发起总量分别是多少？（按类型名称显示）。",
+      "expected_sql": "SELECT CASE WHEN callback_type = 1 THEN '人工回访' WHEN callback_type = 2 THEN '短信回访' WHEN callback_type = 3 THEN '智能语音' END AS 回访类型,SUM(callback_cnt) AS total_initiated FROM item_callback_total_day WHERE busi_time = '2024-01-21' GROUP BY callback_type;",
+      "expected_table": "item_callback_total_day",
+      "steps": {
+        "schema_format": {
+          "success": true,
+          "schema_length": 6074
+        },
+        "prompt_build": {
+          "success": true,
+          "system_prompt_length": 13054,
+          "user_prompt_length": 209
+        },
+        "llm_sql_generation": {
+          "success": true,
+          "generated_sql": "SELECT \"callback_type\", SUM(\"callback_cnt\") AS \"回访发起总量\" FROM \"item_callback_total_day\" WHERE \"busi_time\" = '2024-01-21' GROUP BY \"callback_type\" ORDER BY \"callback_type\" LIMIT 100",
+          "chart_type": "table",
+          "llm_message": ""
+        },
+        "sql_execution": {
+          "success": true,
+          "row_count": 3,
+          "execution_time_ms": 5
+        },
+        "chart_generation": {
+          "success": true,
+          "chart_type": "bar",
+          "has_render_data": true
+        },
+        "summary_generation": {
+          "success": true,
+          "summary": "2024年1月21日，各类回访的发起总量如下：类型1为160次，类型2为164次，类型3为190次。",
+          "method": "llm"
+        },
+        "recommendation_generation": {
+          "success": true,
+          "recommendations": [
+            "查询2024年1月21日当天，各类工单诉求类型的接通数量分别是多少？",
+            "统计2024年1月21日各工单来源渠道的回访发起总量，并按渠道名称展示。",
+            "查询2024年1月21日当天，不同工单状态的工单数量分布情况。"
+          ],
+          "method": "llm"
+        }
+      },
+      "success": true,
+      "errors": [],
+      "generated_sql": "SELECT \"callback_type\", SUM(\"callback_cnt\") AS \"回访发起总量\" FROM \"item_callback_total_day\" WHERE \"busi_time\" = '2024-01-21' GROUP BY \"callback_type\" ORDER BY \"callback_type\" LIMIT 100"
+    }
+  ]
+}

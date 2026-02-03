@@ -3,7 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# 忽略根目录的tests目录，但不忽略algorithm-service/tests
 tests/
+!algorithm-service/tests/
 docker/volume/
 docker/dify/volumes/*
 !docker/dify/docker/volumes/myscale/config/users.d/custom_users_config.xml

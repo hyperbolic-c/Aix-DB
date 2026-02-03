@@ -1,0 +1,100 @@
+{
+  "sql": "SELECT COUNT(*) as total FROM orders",
+  "filtered_sql": "SELECT COUNT(*) as total FROM orders",
+  "execution_result": {
+    "success": true,
+    "row_count": 1,
+    "columns": [
+      "total"
+    ],
+    "rows": [
+      [
+        150
+      ]
+    ],
+    "execution_time_ms": 45
+  },
+  "chart_config": {
+    "type": "table",
+    "title": "查询结果"
+  },
+  "render_data": {
+    "columns": [
+      {
+        "title": "total",
+        "dataIndex": "total"
+      }
+    ],
+    "data": [
+      {
+        "total": 150
+      }
+    ]
+  },
+  "summary": "根据查询结果，查询最近7天的订单量的答案是150",
+  "recommendations": [
+    "查询最近7天的订单量的趋势如何？",
+    "查询最近7天的订单量按月份分布？",
+    "查询最近7天的订单量的详细明细？"
+  ],
+  "steps": [
+    {
+      "name": "schema_inspector",
+      "display_name": "表结构检索",
+      "status": "completed",
+      "start_time": "2026-02-02T12:38:15.083011",
+      "end_time": "2026-02-02T12:38:15.584965",
+      "duration_ms": 501,
+      "tables_found": 2
+    },
+    {
+      "name": "sql_generator",
+      "display_name": "SQL生成",
+      "status": "completed",
+      "start_time": "2026-02-02T12:38:15.585730",
+      "end_time": "2026-02-02T12:38:16.086536",
+      "duration_ms": 500
+    },
+    {
+      "name": "permission_filter",
+      "display_name": "权限过滤",
+      "status": "completed",
+      "start_time": "2026-02-02T12:38:16.086586",
+      "end_time": "2026-02-02T12:38:16.388069",
+      "duration_ms": 301
+    },
+    {
+      "name": "sql_executor",
+      "display_name": "SQL执行",
+      "status": "completed",
+      "start_time": "2026-02-02T12:38:16.388139",
+      "end_time": "2026-02-02T12:38:16.889315",
+      "duration_ms": 501
+    },
+    {
+      "name": "chart_generator",
+      "display_name": "图表配置生成",
+      "status": "completed",
+      "start_time": "2026-02-02T12:38:16.889380",
+      "end_time": "2026-02-02T12:38:17.190192",
+      "duration_ms": 300
+    },
+    {
+      "name": "summarizer",
+      "display_name": "结果总结",
+      "status": "completed",
+      "start_time": "2026-02-02T12:38:17.190260",
+      "end_time": "2026-02-02T12:38:17.491001",
+      "duration_ms": 300
+    },
+    {
+      "name": "recommender",
+      "display_name": "推荐问题生成",
+      "status": "completed",
+      "start_time": "2026-02-02T12:38:17.491047",
+      "end_time": "2026-02-02T12:38:17.792228",
+      "duration_ms": 301
+    }
+  ],
+  "errors": []
+}

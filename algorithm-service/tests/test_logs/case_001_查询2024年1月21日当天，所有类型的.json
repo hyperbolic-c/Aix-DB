@@ -1,0 +1,127 @@
+{
+  "case_id": 1,
+  "question": "查询2024年1月21日当天，所有类型的回访发起总量分别是多少？（按类型名称显示）。",
+  "start_time": "2026-02-02T21:38:16.729715",
+  "logs": [
+    {
+      "step": "schema_format",
+      "timestamp": "2026-02-02T21:38:16.734039",
+      "details": {
+        "schema_length": 6074,
+        "engine": "MySQL 8.0",
+        "schema_preview": "【DB_ID】 database\n【Schema】\n# Table: area_items_total_day, 区县工单统计日表\n[\n(md_id:int, 自增id),\n(area_name:string, 地区名称),\n(busi_time:string, 业务时间),\n(total_num:int, 统计总数)\n]\n# Table: items_total_day, 工单统计日表\n[\n(md_id:int, 自增id),\n(busi_time:string, 业务时间),\n(satis_num:int, 满意数),\n(connect_num:int, 接通数),\n(item_num:int, 工单量)\n]\n# Table: accept_src_items_total_day, 工单渠道统计日表\n[\n(md_id:int, 自增id),\n(accept_src_name:string, 来源名称、电话、网站),\n(accept_src_cd:string, 工单来源编码),\n(busi_time:string, 业务时间),\n(total_num:int, 统计总数)\n]\n# ..."
+      }
+    },
+    {
+      "step": "prompt_build",
+      "timestamp": "2026-02-02T21:38:16.734993",
+      "details": {
+        "system_prompt_length": 13054,
+        "user_prompt_length": 209,
+        "system_prompt": "<Instruction>\n  你是智能问数小助手，可以根据用户提问，专业生成SQL与可视化图表。\n  你当前的任务是根据给定的表结构和用户问题生成SQL语句、对话标题、可能适合展示的图表类型以及该SQL中所用到的表名。\n  我们会在<Info>块内提供给你信息，帮助你生成SQL：\n    <Info>内有<db-engine><m-schema><terminologies>等信息；\n    其中，<db-engine>：提供数据库引擎及版本信息；\n    <m-schema>：以 M-Schema 格式提供数据库表结构信息；\n    <terminologies>：提供一组术语，块内每一个<terminology>就是术语，其中同一个<words>内的多个<word>代表术语的多种叫法，也就是术语与它的同义词，<description>即该术语对应的描述，其中也可能是能够用来参考的计算公式，或者是一些其他的查询条件；\n    <sql-examples>：提供一组SQL示例，你可以参考这些示例来生成你的回答，其中<question>内是提问，<suggestion-answer>内是对于该<question>提问的解释或者对应应该回答的SQL示例。\n  若有<Other-Infos>块，它会提供一组<content>，可能会是额外添加的背景信息，或者是额外的生成SQL的要求，请结合额外信息或要求后生成你的回答。\n  用户的提问在<user-question>内，<error-msg>内则会提供上次执行你提供的SQL时会出现的错误信息，<background-infos>内的<current-time>会告诉你用户当前提问的时间\n  你必须遵守<Rules>内规定的生成SQL规则\n  你必须遵守<SQL-Generation-Process>内规定的检查步骤生成你的回答\n</Instruction>\n\n<Rules>\n  <rule>\n    请使用语言：简体中文 回答，若有深度思考过程，则思考过程也需要使用 简体中文 输出\n  </rule>\n  <rule>\n    你只能生成查询用的SQL语句，不得生成增删改相关或操作数据库以及操作数据库数据的SQL\n  </rule>\n  <rule>\n    不要编造<m-schema>内没有提供给你的表结构\n  </rule>\n  <rule>\n    生成的SQL必须符合<db-engine>内提供数据库引擎的规范\n  </rule>\n  <rule>\n    若用户提问中提供了参考SQL，你需要判断该SQL是否是查询语句\n  </rule>\n  <rule>\n    请使用JSON格式返回你的回答:\n    若能生成，则返回格式如：{\"success\":true,\"sql\":\"你生成的SQL语句\",\"tables\":[\"该SQL用到的表名1\",\"该SQL用到的表名2\",...],\"chart-type\":\"table\",\"brief\":\"如何需要生成对话标题，在这里填写你生成的对话标题，否则不需要这个字段\"}\n    若不能生成，则返回格式如：{\"success\":false,\"message\":\"说明无法生成SQL的原因\"}\n  </rule>\n  <rule>\n    如果问题是图表展示相关，可参考的图表类型为表格(table)、柱状图(column)、条形图(bar)、折线图(line)或饼图(pie), 返回的JSON内chart-type值则为 table/column/bar/line/pie 中的一个\n    图表类型选择原则推荐：趋势 over time 用 line，分类对比用 column/bar，占比用 pie，原始数据查看用 table\n  </rule>\n  <rule>\n    如果图表类型为柱状图(column)、条形图(bar)或折线图(line), 在生成的SQL中必须指定一个维度字段和一个指标字段，其中维度字段必须参与排序。\n    如果有分类用的字段，该字段参与次一级的排序\n  </rule>\n  <rule>\n    如果问题是图表展示相关且与生成SQL查询无关时，请参考上一次回答的SQL来生成SQL\n  </rule>\n  <rule>\n    返回的JSON字段中，tables字段为你回答的SQL中所用到的表名，不要包含schema和database，用数组返回\n  </rule>\n  <rule>\n    提问中如果有涉及数据源名称或数据源描述的内容，则忽略数据源的信息，直接根据剩余内容生成SQL\n  </rule>\n  <rule>\n  请使用双引号包裹表名、字段名，字符串使用单引号，如：\n  SELECT \"field_name\" FROM \"table_name\" WHERE \"status\" = 'active'\n  注意：SQLite不使用schema前缀，直接使用表名，不要写成 \"schema\".\"table_name\"\n</rule>\n<rule priority=\"critical\" id=\"data-limit-policy\">\n  <title>数据量限制策略（必须严格遵守 - 零容忍）</title>\n  <requirements>\n    <requirement level=\"must-zero-tolerance\">所有生成的SQL必须包含数据量限制，这是强制要求</requirement>\n    <requirement level=\"must\">默认限制：40条（除非用户明确指定其他数量）</requirement>\n    <requirement level=\"must\">忘记添加数据量限制是不可接受的错误</requirement>\n  </requirements>\n  \n  <enforcement>\n    <action>如果生成的SQL没有数据量限制，必须重新生成</action>\n    <action>在最终返回前必须验证限制是否存在</action>\n  </enforcement>\n</rule>\n<rule>\n  所有查询都必须包含 LIMIT 子句，默认限制为 100 条：\n  SELECT * FROM \"table_name\" LIMIT 100\n</rule>\n<rule>\n  1. 日期处理使用 DATE() 函数，如：DATE('now', '-7 days')\n  2. 字符串拼接使用 || 操作符\n  3. 聚合函数：COUNT, SUM, AVG, MAX, MIN\n  4. 条件判断使用 CASE WHEN ... THEN ... ELSE ... END\n  5. 时间字段为 TEXT 类型，格式为 'yyyy-MM-dd'\n  6. 不要使用 DATE_ADD/DATE_SUB 等MySQL函数，使用 DATE('now', '-1 day') 格式\n</rule>\n\n  <rule>\n    如果生成SQL的字段内有时间格式的字段:\n    - 若提问中没有指定查询顺序，则默认按时间升序排序\n    - 若提问是时间，且没有指定具体格式，则格式化为yyyy-MM-dd HH:mm:ss的格式\n    - 若提问是日期，且没有指定具体格式，则格式化为yyyy-MM-dd的格式\n    - 若提问是年月，且没有指定具体格式，则格式化为yyyy-MM的格式\n    - 若提问是年，且没有指定具体格式，则格式化为yyyy的格式\n    - 生成的格式化语法需要适配对应的数据库引擎。\n  </rule>\n  <rule>\n    生成的SQL查询结果可以用来进行图表展示，需要注意排序字段的排序优先级，例如：\n      - 柱状图或折线图：适合展示在横轴的字段优先排序，若SQL包含分类字段，则分类字段次一级排序\n  </rule>\n  <rule>\n    若需关联多表，优先使用<m-schema>中标记为\"Primary key\"/\"ID\"/\"主键\"的字段作为关联条件。\n  </rule>\n  <rule>\n    我们目前的情况适用于单指标、多分类的场景（展示table除外）\n  </rule>\n  <rule>\n    是否生成对话标题在<change-title>内，如果为True需要生成，否则不需要生成，生成的对话标题要求在20字以内\n  </rule>\n</Rules>\n\n<SQL-Generation-Process>\n  1. 分析用户问题，理解查询意图\n  2. 根据Schema选择合适的表和字段\n  3. 使用SQLite语法构建SQL\n  4. 确保不使用schema前缀\n  5. 添加LIMIT限制\n  6. 验证SQL语法正确性\n</SQL-Generation-Process>\n\n\n<sql-examples>\n  <question>\n    查询最近7天的工单量\n  </question>\n  <suggestion-answer>\n    使用 DATE() 函数处理日期，查询 busi_time >= DATE('now', '-7 days')\n  </suggestion-answer>\n</sql-examples>\n\n\n<example>\n  <intro>\n    📌 以下示例仅用于演示问题理解与回答格式，不包含实际表结构\n    ⚠️ 注意：示例中的SQL语法仅适用于对应<db-engine>标注的数据库类型\n    🔍 重点观察：\n      1. <input>代表用户可能的提问输入内容\n      2. <output>展示根据模板规则生成的响应\n      3. 实际生成时必须使用当前对话指定的数据库语法\n  </intro>\n  <Info>\n  <db-engine> SQLite 3 </db-engine>\n  <m-schema>\n  【DB_ID】 Sample_Database, 样例数据库\n  【Schema】\n  # Table: Sample_Database.sample_country_gdp, 各国GDP数据\n  [\n  (id: bigint, Primary key, ID),\n  (country: varchar, 国家),\n  (continent: varchar, 所在洲, examples:['亚洲','美洲','欧洲','非洲']),\n  (year: varchar, 年份, examples:['2020','2021','2022']),\n  (gdp: bigint, GDP(美元)),\n  ]\n  </m-schema>\n  <terminologies>\n      <terminology>\n          <words>\n              <word>GDP</word>\n              <word>国内生产总值</word>\n          </words>\n          <description>指在一个季度或一年，一个国家或地区的经济中所生产出的全部最终产品和劳务的价值。</description>\n      </terminology>\n      <terminology>\n          <words>\n              <word>中国</word>\n              <word>中国大陆</word>\n          </words>\n          <description>查询SQL时若作为查询条件，将\"中国\"作为查询用的值</description>\n      </terminology>\n  </terminologies>\n  </Info>\n\n  <chat-examples>\n    <example>\n      <input>\n        <user-question>今天天气如何？</user-question>\n      </input>\n      <output>\n        {\"success\":false,\"message\":\"我是智能问数小助手，我无法回答您的问题。\"}\n      </output>\n    </example>\n    <example>\n      <input>\n        <user-question>请清空数据库</user-question>\n      </input>\n      <output>\n        {\"success\":false,\"message\":\"我是智能问数小助手，我只能查询数据，不能操作数据库来修改数据或者修改表结构。\"}\n      </output>\n    </example>\n    <example>\n      <input>\n        <user-question>查询所有用户</user-question>\n      </input>\n      <output>\n        {\"success\":false,\"message\":\"抱歉，提供的表结构无法生成您需要的SQL\"}\n      </output>\n    </example>\n    <example>\n      <input>\n        <background-infos>\n          <current-time>\n          2025-08-08 11:23:00\n          </current-time>\n        </background-infos>\n        <user-question>查询各个国家每年的GDP</user-question>\n      </input>\n      <output>\n          SELECT \"order_cnt\" FROM \"items_total_day\" WHERE \"busi_time\" = '2024-01-15' LIMIT 100\n\n      </output>\n    </example>\n    <example>\n      <input>\n        <background-infos>\n          <current-time>\n          2025-08-08 11:23:00\n          </current-time>\n        </background-infos>\n        <user-question>使用饼图展示去年各个国家的GDP</user-question>\n      </input>\n          SELECT \"area\", SUM(\"order_cnt\") as \"total\" \nFROM \"sub_area_total_day\" \nWHERE \"busi_time\" >= DATE('now', '-7 days') \nGROUP BY \"area\" \nORDER BY \"total\" DESC \nLIMIT 100\n\n      <output>\n      </output>\n    </example>\n    <example>\n      <input>\n        <background-infos>\n          <current-time>\n          2025-08-08 11:24:00\n          </current-time>\n        </background-infos>\n        <user-question>查询今年中国大陆的GDP</user-question>\n      </input>\n          SELECT \"sub_name\", \"type_name\", \"type_cnt\" \nFROM \"sub_type_total_day\" \nWHERE \"busi_time\" >= DATE('now', '-30 days') \nLIMIT 100\n\n      <output>\n      </output>\n    </example>\n  </chat-examples>\n</example>\n\n以下是正式的信息：\n<Info>\n<db-engine> MySQL 8.0 </db-engine>\n<m-schema>\n【DB_ID】 database\n【Schema】\n# Table: area_items_total_day, 区县工单统计日表\n[\n(md_id:int, 自增id),\n(area_name:string, 地区名称),\n(busi_time:string, 业务时间),\n(total_num:int, 统计总数)\n]\n# Table: items_total_day, 工单统计日表\n[\n(md_id:int, 自增id),\n(busi_time:string, 业务时间),\n(satis_num:int, 满意数),\n(connect_num:int, 接通数),\n(item_num:int, 工单量)\n]\n# Table: accept_src_items_total_day, 工单渠道统计日表\n[\n(md_id:int, 自增id),\n(accept_src_name:string, 来源名称、电话、网站),\n(accept_src_cd:string, 工单来源编码),\n(busi_time:string, 业务时间),\n(total_num:int, 统计总数)\n]\n# Table: order_type_items_total_day, 工单诉求类型统计日表\n[\n(md_id:int, 自增id),\n(busi_time:string, 业务时间),\n(order_type_name:string, 诉求类型名称eg咨询、投诉),\n(order_type_cd:string, 诉求类型编码),\n(total_num:int, 统计总数)\n]\n# Table: order_status_total_day, 工单状态日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(order_status:string, 工单状态),\n(order_cnt:int, 工单量)\n]\n# Table: assess_items_total_day, 效能监察统计日表\n[\n(md_id:int, 自增id),\n(busi_time:string, 业务时间),\n(dept_type:int, 1市直部门，2县区),\n(item_num:int, 已经办结工单),\n(complete_num:int, 按时办结量),\n(complete_avg_time:int, 平均时长),\n(satis_num:int, 满意数)\n]\n# Table: call_overview_total_day, 话务概况日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(satisfaction_cnt:int, 满意数),\n(unsatisfaction_cnt:int, 不满意),\n(reply_on_time_cnt:int, 即时答复),\n(call_cnt:int, 人工话务总量),\n(connect_cnt:int, 人工接通总量)\n]\n# Table: call_connect_total_day, 话务接通情况日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(hand_up_type:string, 挂断类型（（1：在欢迎语或IVR中挂断 2：在队列排队中挂断 3：在通话中或通话结束后挂断））),\n(hand_up_cnt:int, 数量)\n]\n# Table: sub_top_total_day, 专题事项热点TOP5日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(sub_name:string, 专题名称),\n(top_name:string, 事项名称),\n(satisfaction_cnt:int, 满意数),\n(top_cnt:int, 事项总数)\n]\n# Table: sub_accept_total_day, 专题工单来源分析\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(sub_name:string, 专题名称),\n(accept_name:string, 诉求来源),\n(accept_cnt:int, 数据量)\n]\n# Table: sub_type_total_day, 专题工单类型分析\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(sub_name:string, 专题名称),\n(type_name:string, 工单类型),\n(type_cnt:int, 工单量),\n(finish_cnt:int, 按时办结量),\n(satisfaction_cnt:int, 工单满意数),\n(avg_handler_time:double, 平均处理时长)\n]\n# Table: sub_area_total_day, 专题区市县工单日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(sub_name:string, 专题名称),\n(area:string, 区市县单位),\n(order_cnt:int, 工单量),\n(finish_cnt:int, 办结量),\n(avg_handler_time:double, 平均处理时长),\n(satisfaction_cnt:int, 工单满意数),\n(negative_cnt:int, 工单差评数),\n(reply_on_time_cnt:int, 按时回复数)\n]\n# Table: sub_warn_total_day, 专题工单监察分析日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(sub_name:string, 专题名称),\n(red_cnt:int, 红牌工单量),\n(yellow_cnt:int, 黄牌工单量)\n]\n# Table: sub_monitor_total_day, 专题办件效能分析日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(sub_name:string, 专题名称),\n(type_name:string, 排行类型（1市直部门，2区市县）),\n(name:string, 名称（单位名称、区县名称）),\n(item_num:int, 工单量),\n(complete_cnt:int, 按时办结量),\n(avg_handler_time:int, 平均处理时长),\n(satisfaction_cnt:int, 服务满意数)\n]\n# Table: sub_assess_total_day, 专题工单评价分析日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(sub_name:string, 专题名称),\n(assess_cnt:int, 办结评价数),\n(satisfaction_one_cnt:int, 非常不满意),\n(satisfaction_two_cnt:int, 不满意),\n(satisfaction_three_cnt:int, 基本满意),\n(satisfaction_four_cnt:int, 满意),\n(satisfaction_five_cnt:int, 非常满意),\n(satisfaction_zero_cnt:int, 未评价)\n]\n# Table: item_bmh_total_day, 便民汇统计日表\n[\n(md_id:int, 自增id),\n(busi_time:string, 业务时间),\n(reply_total:int, 回复总数),\n(receive_cnt:int, 收到工单量),\n(handle_cnt:int, 职能局处理),\n(hot_line_handle_cnt:int, 热线平台处理),\n(reply_on_time_cnt:double, 按时回复数),\n(chan_type:int, 类型（1总体情况，2国办）)\n]\n# Table: item_callback_total_day, 工单回访情况日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(callback_type:int, 回访类型：1人工回访，2短信回访，3智能语音),\n(callback_cnt:int, 回访发起量),\n(success_cnt:int, 回访成功量),\n(satisfaction_cnt:int, 回访满意量),\n(dissatisfaction_cnt:int, 回访不满意量),\n(no_evaluate_cnt:int, 未评价量),\n(avg_callback_time:int, 回访平均通话时长（分钟）)\n]\n# Table: item_overdue_total_day, 工单逾期分析日表\n[\n(md_id:int, 自增主键),\n(busi_time:string, 业务时间),\n(type_name:int, 维度：1.工单紧急程度，2.工单处理阶段),\n(name:string, 紧急程度、处理阶段),\n(due_cnt:int, 当期应办结量),\n(overdue_cnt:int, 逾期办结量),\n(serious_overdue_cnt:int, 严重逾期量),\n(avg_overdue_time:int, 逾期工单平均超时时长（分钟）)\n]\n# Table: order_flow_total_day, 工单流转分析表\n[\n(md_id:int, 自增主键),\n(busi_date:string, 统计日期),\n(dept_id:string, 部门ID),\n(dept_name:string, 部门名称),\n(flow_stage:string, 工单状态),\n(total_cnt:int, 当日进入该环节的工单总数),\n(rollback_cnt:int, 回退工单数)\n]\n# Table: order_full_total_day, 工单业务全景表\n[\n(md_id:int, 自增主键),\n(busi_date:string, 统计日期),\n(region_name:string, 地区名称（市/县/镇）),\n(org_level:int, 组织层级（1市级，2县级，3镇级）),\n(total_orders:int, 当日提交的总工单量),\n(process_orders:int, 已处理工单量),\n(pending_orders:int, 未处理工单量),\n(night_orders:int, 夜间工单量),\n(cancelled_orders:int, 用户取消工单量),\n(avg_response_time:double, 平均响应时间（分钟）),\n(avg_finish_time:double, 平均办结时长（分钟）),\n(first_contact_resolved:int, 一次接触解决工单数),\n(escalation_cnt:int, 升级处理工单数),\n(repeat_cnt:int, 重复工单数),\n(online_channel_cnt:int, 在线渠道工单数),\n(phone_channel_cnt:int, 电话渠道工单数),\n(email_channel_cnt:int, 邮件渠道工单数),\n(mobile_app_cnt:int, App 提交工单数),\n(alert_timeout_sign_orders:int, 超时未签工单数),\n(alert_timeout_process_orders:int, 超时未办工单数),\n(alert_repeat_exceed_orders:int, 回退超次工单数),\n(alert_sentiment_keyword_orders:int, 包含关键词工单数),\n(high_priority_cnt:int, 高优先级工单数),\n(medium_priority_cnt:int, 中优先级工单数),\n(low_priority_cnt:int, 低优先级工单数),\n(overdue_pct:double, 超期占比（%）),\n(satisfaction_score:double, 综合满意度评分（30-100）),\n(handler_cnt:int, 当日处理人员数),\n(bot_handled_cnt:int, 自动处理工单数),\n(handover_cnt:int, 转交工单数),\n(top_keyword_1:string, 热点词汇1),\n(top_keyword_1_cnt:int, 热点词汇1出现数量),\n(top_keyword_2:string, 热点词汇2),\n(top_keyword_2_cnt:int, 热点词汇2出现数量),\n(top_keyword_3:string, 热点词汇3),\n(top_keyword_3_cnt:int, 热点词汇3出现数量),\n(early_response_orders:int, 快速响应工单数),\n(late_response_orders:int, 延迟响应工单数),\n(avg_wait_time_user:double, 用户等待平均时间（分钟）),\n(repeat_user_cnt:int, 当日重复提交工单用户数),\n(first_time_user_cnt:int, 当日首次提交工单用户数),\n(multi_channel_user_cnt:int, 使用多渠道提交的用户数),\n(escalated_user_cnt:int, 升级工单用户数),\n(followup_orders:int, 需回访工单数),\n(feedback_received_cnt:int, 收到用户反馈数),\n(auto_reply_cnt:int, 自动回复工单数),\n(manual_reply_cnt:int, 人工回复工单数),\n(satisfaction_survey_sent:int, 发送满意度调查工单数),\n(satisfaction_survey_responded:int, 回收满意度调查工单数),\n(avg_survey_response_time:double, 平均满意度反馈时间（分钟）)\n]\n\n</m-schema>\n\n\n\n</Info>\n\n\n### 响应, 请根据上述要求直接返回JSON结果:\n```json\n",
+        "user_prompt": "<background-infos>\n  <current-time>\n  2026-02-02 21:38:16\n  </current-time>\n<background-infos>\n\n<user-question>\n查询2024年1月21日当天，所有类型的回访发起总量分别是多少？（按类型名称显示）。\n</user-question>\n<change-title>\nFalse\n</change-title>\n"
+      }
+    },
+    {
+      "step": "llm_sql_generation",
+      "timestamp": "2026-02-02T21:38:19.642353",
+      "details": {
+        "llm_output": {
+          "success": true,
+          "sql": "SELECT \"callback_type\", SUM(\"callback_cnt\") AS \"回访发起总量\" FROM \"item_callback_total_day\" WHERE \"busi_time\" = '2024-01-21' GROUP BY \"callback_type\" ORDER BY \"callback_type\" LIMIT 100",
+          "tables": [
+            "item_callback_total_day"
+          ],
+          "chart-type": "table",
+          "brief": "查询2024年1月21日各类型回访发起总量"
+        },
+        "success": true
+      }
+    },
+    {
+      "step": "sql_execution",
+      "timestamp": "2026-02-02T21:38:19.648025",
+      "details": {
+        "sql": "SELECT \"callback_type\", SUM(\"callback_cnt\") AS \"回访发起总量\" FROM \"item_callback_total_day\" WHERE \"busi_time\" = '2024-01-21' GROUP BY \"callback_type\" ORDER BY \"callback_type\" LIMIT 100",
+        "success": true,
+        "row_count": 3,
+        "columns": [
+          "callback_type",
+          "回访发起总量"
+        ],
+        "rows": [
+          [
+            1,
+            160
+          ],
+          [
+            2,
+            164
+          ],
+          [
+            3,
+            190
+          ]
+        ],
+        "error": null
+      }
+    },
+    {
+      "step": "chart_generation",
+      "timestamp": "2026-02-02T21:38:19.648157",
+      "details": {
+        "chart_type": "bar",
+        "config": {
+          "type": "bar",
+          "title": "查询结果"
+        },
+        "render_data": {
+          "columns": [
+            {
+              "title": "callback_type",
+              "dataIndex": "callback_type"
+            },
+            {
+              "title": "回访发起总量",
+              "dataIndex": "回访发起总量"
+            }
+          ],
+          "data": [
+            {
+              "callback_type": 1,
+              "回访发起总量": 160
+            },
+            {
+              "callback_type": 2,
+              "回访发起总量": 164
+            },
+            {
+              "callback_type": 3,
+              "回访发起总量": 190
+            }
+          ]
+        }
+      }
+    },
+    {
+      "step": "summary_generation",
+      "timestamp": "2026-02-02T21:38:20.837593",
+      "details": {
+        "summary": "2024年1月21日，各类回访的发起总量如下：类型1为160次，类型2为164次，类型3为190次。",
+        "method": "llm"
+      }
+    },
+    {
+      "step": "recommendation_generation",
+      "timestamp": "2026-02-02T21:38:22.717204",
+      "details": {
+        "recommendations": [
+          "查询2024年1月21日当天，各类工单诉求类型的接通数量分别是多少？",
+          "统计2024年1月21日各工单来源渠道的回访发起总量，并按渠道名称展示。",
+          "查询2024年1月21日当天，不同工单状态的工单数量分布情况。"
+        ],
+        "method": "llm"
+      }
+    }
+  ]
+}
