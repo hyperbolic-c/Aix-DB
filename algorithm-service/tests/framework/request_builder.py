@@ -161,6 +161,7 @@ class CompetitionRequestBuilder:
         self, 
         case_id: int, 
         include_related_tables: bool = True,
+        include_all_tables: bool = False,
         custom_terminologies: Optional[List[Dict]] = None,
         custom_sql_examples: Optional[List[Dict]] = None
     ) -> Dict[str, Any]:
@@ -169,7 +170,8 @@ class CompetitionRequestBuilder:
         
         Args:
             case_id: 测试用例ID
-            include_related_tables: 是否包含相关表
+            include_related_tables: 是否包含相关表（前缀匹配）
+            include_all_tables: 是否包含所有表（覆盖include_related_tables）
             custom_terminologies: 自定义术语列表
             custom_sql_examples: 自定义SQL示例列表
             
@@ -184,10 +186,16 @@ class CompetitionRequestBuilder:
         primary_table = case.get("table", "")
         
         # 2. 从Excel提取Schema
-        if include_related_tables:
+        if include_all_tables:
+            # 加载所有表
+            all_tables = self.schema_loader.load_schema()["tables"]
+            table_names = [t["name"] for t in all_tables]
+        elif include_related_tables:
+            # 前缀匹配相关表
             related_tables = self.schema_loader.get_related_tables(primary_table)
             table_names = [t["name"] for t in related_tables]
         else:
+            # 只加载主表
             table_names = [primary_table]
         
         schema_info = self._build_schema_info(table_names)

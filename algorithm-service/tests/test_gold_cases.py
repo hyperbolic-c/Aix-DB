@@ -71,7 +71,9 @@ class DetailedLogger:
 async def test_case(
     case: Dict[str, Any],
     verbose: bool = True,
-    validate_execution: bool = True
+    validate_execution: bool = True,
+    include_related_tables: bool = True,
+    include_all_tables: bool = False
 ) -> Dict[str, Any]:
     """
     测试单个用例
@@ -106,14 +108,27 @@ async def test_case(
         # 1. 从xlsx加载Schema（新方式）
         detailed_logger.log("SCHEMA", "从Excel加载Schema")
         schema_loader = ExcelSchemaLoader("target_db/competition/finalTableSchema.xlsx")
-        related_tables = schema_loader.get_related_tables(expected_table)
+        
+        # 根据配置加载表
+        if include_all_tables:
+            schema_data = schema_loader.load_schema()
+            related_tables = schema_data["tables"]
+            mode_desc = "所有表"
+        elif include_related_tables:
+            related_tables = schema_loader.get_related_tables(expected_table)
+            mode_desc = "前缀匹配"
+        else:
+            # 只加载主表
+            primary = schema_loader.get_table_schema(expected_table)
+            related_tables = [primary] if primary else []
+            mode_desc = "仅主表"
         
         if verbose:
-            print(f"\n[Schema加载]")
+            print(f"\n[Schema加载] 模式: {mode_desc}")
             print(f"  主表: {expected_table}")
-            print(f"  相关表: {[t['name'] for t in related_tables]}")
+            print(f"  加载表: {[t['name'] for t in related_tables]}")
         
-        detailed_logger.log("SCHEMA", f"加载了 {len(related_tables)} 个相关表")
+        detailed_logger.log("SCHEMA", f"加载了 {len(related_tables)} 个表 (模式: {mode_desc})")
         
         # 2. 构建db_info（兼容原有格式）
         db_info = {}
@@ -277,7 +292,9 @@ async def run_tests(
     case_id: Optional[int] = None,
     level: Optional[int] = None,
     output_dir: Optional[str] = None,
-    validate_execution: bool = True
+    validate_execution: bool = True,
+    include_related_tables: bool = True,
+    include_all_tables: bool = False
 ):
     """
     运行测试
@@ -339,7 +356,9 @@ async def run_tests(
         result = await test_case(
             case,
             verbose=False,  # 批量测试时不打印详细信息
-            validate_execution=validate_execution
+            validate_execution=validate_execution,
+            include_related_tables=include_related_tables,
+            include_all_tables=include_all_tables
         )
         
         results.append(result)
@@ -406,6 +425,7 @@ def main():
   python test_gold_cases.py --case-id 1
   python test_gold_cases.py --level 1
   python test_gold_cases.py --no-execution  # 不验证SQL执行
+  python test_gold_cases.py --schema-mode all  # 加载所有表
         """
     )
     
@@ -414,15 +434,23 @@ def main():
     parser.add_argument("--level", type=int, choices=[1, 2, 3], help="指定难度级别")
     parser.add_argument("--output-dir", type=str, help="输出目录")
     parser.add_argument("--no-execution", action="store_true", help="不验证SQL执行")
+    parser.add_argument("--schema-mode", type=str, choices=["primary", "related", "all"],
+                       default="related", help="Schema加载模式: primary=只主表, related=前缀匹配(默认), all=所有表")
     
     args = parser.parse_args()
+    
+    # 根据schema-mode设置参数
+    include_related = args.schema_mode == "related"
+    include_all = args.schema_mode == "all"
     
     asyncio.run(run_tests(
         limit=args.limit,
         case_id=args.case_id,
         level=args.level,
         output_dir=args.output_dir,
-        validate_execution=not args.no_execution
+        validate_execution=not args.no_execution,
+        include_related_tables=include_related,
+        include_all_tables=include_all
     ))
 
 
