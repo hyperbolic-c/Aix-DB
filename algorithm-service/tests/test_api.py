@@ -124,11 +124,11 @@ async def test_analyze(base_url: str = "http://localhost:8001"):
     try:
         async with httpx.AsyncClient() as client:
             async with client.stream(
-                "POST",
-                f"{base_url}/api/v1/analyze",
-                json=TEST_REQUEST,
-                timeout=60.0
-            ) as response:
+                    "POST",
+                    f"{base_url}/api/v1/analyze",
+                    json=TEST_REQUEST,
+                    timeout=60.0
+                ) as response:
                 print(f"状态码: {response.status_code}")
                 print(f"内容类型: {response.headers.get('content-type', 'unknown')}")
                 print("-" * 60)

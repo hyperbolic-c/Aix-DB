@@ -1,0 +1,36 @@
+{
+  "timestamp": "20260203_110400",
+  "total": 1,
+  "passed": 1,
+  "failed": 0,
+  "level_stats": {
+    "2": {
+      "total": 1,
+      "passed": 1
+    }
+  },
+  "results": [
+    {
+      "case_id": 1,
+      "question": "查询2024年1月21日当天，所有类型的回访发起总量分别是多少？（按类型名称显示）。",
+      "expected_sql": "SELECT CASE WHEN callback_type = 1 THEN '人工回访' WHEN callback_type = 2 THEN '短信回访' WHEN callback_type = 3 THEN '智能语音' END AS 回访类型,SUM(callback_cnt) AS total_initiated FROM item_callback_total_day WHERE busi_time = '2024-01-21' GROUP BY callback_type;",
+      "generated_sql": "SELECT \"callback_type\", SUM(\"callback_cnt\") AS \"total_callback_cnt\" FROM \"item_callback_total_day\" WHERE \"busi_time\" = '2024-01-21' GROUP BY \"callback_type\" ORDER BY \"callback_type\" LIMIT 100",
+      "success": true,
+      "syntax_valid": true,
+      "execution_valid": true,
+      "errors": [],
+      "warnings": [],
+      "details": {
+        "schema_tables": [
+          "items_total_day",
+          "item_bmh_total_day",
+          "item_callback_total_day",
+          "item_overdue_total_day"
+        ],
+        "prompt_length": 8223,
+        "execution_time_ms": 0.8,
+        "row_count": 3
+      }
+    }
+  ]
+}

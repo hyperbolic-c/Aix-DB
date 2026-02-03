@@ -140,12 +140,15 @@ async def test_case(
         
         # 4. 构建Prompt
         detailed_logger.log("PROMPT", "构建Prompt")
-        prompt = prompt_builder.build_prompt(
-            question=question,
+        system_prompt, user_prompt = prompt_builder.build_sql_prompt(
+            db_type="sqlite",
             schema=schema_str,
-            terminologies=[],  # 可扩展
-            examples=[]        # 可扩展
+            question=question,
+            engine="SQLite",
+            terminologies="",
+            data_training=""
         )
+        prompt = f"{system_prompt}\n\n{user_prompt}"
         
         if verbose:
             print(f"\n[Prompt构建]")
@@ -159,7 +162,7 @@ async def test_case(
         if verbose:
             print(f"\n[SQL生成]")
         
-        result = await agent.process(
+        result = await agent.analyze(
             query=question,
             datasource_config={
                 "db_type": "sqlite",
@@ -168,9 +171,8 @@ async def test_case(
             schema_info={"tables": related_tables},
             terminologies=[],
             training_examples=[],
-            chat_history=[],
-            user_id=1,
-            datasource_id=1
+            permission_rules={},
+            user_id=1
         )
         
         generated_sql = result.get("sql", "")

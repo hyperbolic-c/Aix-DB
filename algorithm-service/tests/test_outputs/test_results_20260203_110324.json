@@ -1,0 +1,38 @@
+{
+  "timestamp": "20260203_110324",
+  "total": 3,
+  "passed": 0,
+  "failed": 3,
+  "level_stats": {
+    "2": {
+      "total": 3,
+      "passed": 0
+    }
+  },
+  "results": [
+    {
+      "case_id": 1,
+      "question": "查询2024年1月21日当天，所有类型的回访发起总量分别是多少？（按类型名称显示）。",
+      "expected_sql": "SELECT CASE WHEN callback_type = 1 THEN '人工回访' WHEN callback_type = 2 THEN '短信回访' WHEN callback_type = 3 THEN '智能语音' END AS 回访类型,SUM(callback_cnt) AS total_initiated FROM item_callback_total_day WHERE busi_time = '2024-01-21' GROUP BY callback_type;",
+      "generated_sql": null,
+      "success": false,
+      "error": "'Text2SqlAgent' object has no attribute 'process'"
+    },
+    {
+      "case_id": 2,
+      "question": "请问2024年11月热线挂断情况各类型占比是多少？",
+      "expected_sql": "SELECT \n  hand_up_type,\n  ROUND(\n    1.0 * SUM(hand_up_cnt) / \n    (SELECT SUM(hand_up_cnt)\n     FROM call_connect_total_day\n     WHERE strftime('%Y-%m', busi_time) = '2024-11'\n    ) * 100, \n    2\n  ) AS percentage\nFROM \n  call_connect_total_day\nWHERE \n  strftime('%Y-%m', busi_time) = '2024-11'\nGROUP BY \n  hand_up_type",
+      "generated_sql": null,
+      "success": false,
+      "error": "'Text2SqlAgent' object has no attribute 'process'"
+    },
+    {
+      "case_id": 3,
+      "question": "在2023年1月，电话渠道工单占比最高的前3个的地区分别是哪些，占比是多少？",
+      "expected_sql": "SELECT region_name, ROUND(SUM(phone_channel_cnt)*100.0/SUM(total_orders),2) AS phone_ratio FROM order_full_total_day \nWHERE strftime('%Y-%m', busi_date) = '2023-01' GROUP BY region_name ORDER BY phone_ratio DESC LIMIT 3;\n",
+      "generated_sql": null,
+      "success": false,
+      "error": "'Text2SqlAgent' object has no attribute 'process'"
+    }
+  ]
+}
