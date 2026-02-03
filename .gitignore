@@ -73,3 +73,5 @@ examples/
 !constants/**/*.py
 
 target_db/
+
+.trae/
