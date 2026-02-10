@@ -179,6 +179,17 @@ async function runTest() {
 function displayResults(result) {
     elements.resultsSection.style.display = 'block';
     
+    // 显示算法步骤日志
+    if (result.steps && result.steps.length > 0) {
+        addLog('--- 算法执行步骤 ---');
+        result.steps.forEach(step => {
+            const icon = step.type === 'step_complete' ? '✓' : 
+                        step.type === 'step_error' ? '✗' : '→';
+            addLog(`${icon} ${step.message}`);
+        });
+        addLog(`--- 总耗时: ${result.total_time_ms}ms ---`);
+    }
+    
     // SQL
     elements.sqlCode.textContent = result.sql || '-- 无 SQL 生成';
     
@@ -201,6 +212,11 @@ function displayResults(result) {
             tbody.innerHTML = data.map(row => 
                 `<tr>${headers.map(h => `<td>${row[h]}</td>`).join('')}</tr>`
             ).join('');
+        } else {
+            const thead = elements.dataTable.querySelector('thead');
+            thead.innerHTML = '';
+            const tbody = elements.dataTable.querySelector('tbody');
+            tbody.innerHTML = '<tr><td colspan="100" style="text-align:center;color:var(--text-muted)">无数据</td></tr>';
         }
     }
     
