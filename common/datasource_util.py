@@ -19,6 +19,7 @@ from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.exc import SQLAlchemyError
 
 # 达梦数据库驱动（可选依赖）
+# 注释掉：当前系统版本不支持 dmPython
 try:
     import dmPython
 except ImportError:
