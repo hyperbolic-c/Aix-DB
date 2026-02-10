@@ -74,6 +74,8 @@ dependencies = [
     "redshift-connector==2.1.4",
     "clickhouse-sqlalchemy==0.3.2",
     "deepagents>=0.3.7",
+    "fastapi>=0.128.0",
+    "uvicorn>=0.38.0",
 ]
 
 [[tool.uv.index]]
@@ -111,3 +113,8 @@ extend-exclude = '''
   | __pycache__
 )/
 '''
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+]
