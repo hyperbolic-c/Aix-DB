@@ -186,6 +186,7 @@ class Text2SqlAgent:
             }
         
         schema_str = format_schema_to_m_schema(db_info, "database", db_type)
+        logger.info(f"[Prompt Debug] Schema格式化完成，共{len(db_info)}张表")
         
         # 格式化术语
         terminologies_str = ""
@@ -194,6 +195,9 @@ class Text2SqlAgent:
                 f"- {t['word']}: {t['description']}"
                 for t in terminologies
             ])
+            logger.info(f"[Prompt Debug] 术语数量: {len(terminologies)}")
+        else:
+            logger.info("[Prompt Debug] 无术语信息")
         
         # 格式化训练示例
         training_str = ""
@@ -202,6 +206,9 @@ class Text2SqlAgent:
                 f"Q: {ex['question']}\nSQL: {ex['sql']}"
                 for ex in training_examples[:3]  # 最多3个示例
             ])
+            logger.info(f"[Prompt Debug] 训练示例数量: {len(training_examples)}")
+        else:
+            logger.info("[Prompt Debug] 无训练示例")
         
         # 获取数据库引擎信息
         engine = get_database_engine_info(db_type)
@@ -217,21 +224,32 @@ class Text2SqlAgent:
                 data_training=training_str,
             )
             
+            # 记录提示词日志
+            logger.info("=" * 80)
+            logger.info("[Prompt Debug] SQL生成 - System Prompt:")
+            logger.info("=" * 80)
+            logger.info(system_prompt[:2000] + "..." if len(system_prompt) > 2000 else system_prompt)
+            logger.info("=" * 80)
+            logger.info("[Prompt Debug] SQL生成 - User Prompt:")
+            logger.info("=" * 80)
+            logger.info(user_prompt)
+            logger.info("=" * 80)
+            
             # 调用LLM生成SQL
             llm_service = get_llm_service()
             result = llm_service.generate_sql(system_prompt, user_prompt)
             
             if result.get("success"):
                 sql = result.get("sql", "")
-                logger.info(f"LLM生成SQL成功: {sql}")
+                logger.info(f"[Prompt Debug] LLM生成SQL成功: {sql}")
                 return sql
             else:
-                logger.error(f"LLM生成SQL失败: {result.get('message', '未知错误')}")
+                logger.error(f"[Prompt Debug] LLM生成SQL失败: {result.get('message', '未知错误')}")
                 # 降级到规则生成
                 return self._generate_sql_rule_based(query, schema_info, db_type)
                 
         except Exception as e:
-            logger.error(f"LLM调用失败，使用规则生成: {e}")
+            logger.error(f"[Prompt Debug] LLM调用失败，使用规则生成: {e}")
             # 降级到规则生成
             return self._generate_sql_rule_based(query, schema_info, db_type)
     
@@ -328,6 +346,7 @@ class Text2SqlAgent:
     ) -> Dict[str, Any]:
         """生成图表配置"""
         if not execution_result.get("success"):
+            logger.info("[Prompt Debug] SQL执行失败，跳过图表配置生成")
             return {
                 "chart_type": "table",
                 "config": {},
@@ -336,6 +355,7 @@ class Text2SqlAgent:
         
         columns = execution_result.get("columns", [])
         rows = execution_result.get("rows", [])
+        logger.info(f"[Prompt Debug] 图表配置生成 - 列数: {len(columns)}, 行数: {len(rows)}")
         
         # 判断图表类型
         chart_type = "table"
@@ -373,16 +393,25 @@ class Text2SqlAgent:
     ) -> str:
         """生成结果总结"""
         if not execution_result.get("success"):
+            logger.info("[Prompt Debug] SQL执行失败，生成错误总结")
             return f"查询执行失败: {execution_result.get('error', '未知错误')}"
         
         try:
             # 使用LLM生成总结
             llm_service = get_llm_service()
-            data_result = json.dumps(execution_result, ensure_ascii=False)
+            data_result = json.dumps(execution_result, ensure_ascii=False, default=str)
+            
+            logger.info("=" * 80)
+            logger.info("[Prompt Debug] 结果总结 - 输入数据:")
+            logger.info("=" * 80)
+            logger.info(data_result[:1000] + "..." if len(data_result) > 1000 else data_result)
+            logger.info("=" * 80)
+            
             summary = llm_service.generate_summary(data_result, query)
+            logger.info(f"[Prompt Debug] 结果总结生成成功: {summary}")
             return summary
         except Exception as e:
-            logger.error(f"LLM总结生成失败，使用默认总结: {e}")
+            logger.error(f"[Prompt Debug] LLM总结生成失败，使用默认总结: {e}")
             # 降级到默认总结
             rows = execution_result.get("rows", [])
             row_count = execution_result.get("row_count", 0)
@@ -423,6 +452,25 @@ class Text2SqlAgent:
                 }
             
             schema_str = format_schema_to_m_schema(db_info, "database", "sqlite")
+            logger.info(f"[Prompt Debug] 推荐问题生成 - Schema包含{len(db_info)}张表")
+            
+            # 构建提示词
+            system_prompt, user_prompt = self.prompt_builder.build_guess_question_prompt(
+                schema=schema_str,
+                question=query,
+                old_questions=[],
+                articles_number=3,
+            )
+            
+            logger.info("=" * 80)
+            logger.info("[Prompt Debug] 推荐问题生成 - System Prompt:")
+            logger.info("=" * 80)
+            logger.info(system_prompt[:1000] + "..." if len(system_prompt) > 1000 else system_prompt)
+            logger.info("=" * 80)
+            logger.info("[Prompt Debug] 推荐问题生成 - User Prompt:")
+            logger.info("=" * 80)
+            logger.info(user_prompt)
+            logger.info("=" * 80)
             
             recommendations = llm_service.generate_recommendations(
                 schema=schema_str,
@@ -437,7 +485,7 @@ class Text2SqlAgent:
             raise ValueError("LLM返回空推荐")
             
         except Exception as e:
-            logger.error(f"LLM推荐问题生成失败，使用默认推荐: {e}")
+            logger.error(f"[Prompt Debug] LLM推荐问题生成失败，使用默认推荐: {e}")
             # 降级到默认推荐
             recommendations = []
             query_lower = query.lower()
