@@ -21,6 +21,7 @@ web/dist/
 .DS_Store
 .idea/
 .venv/
+.trae/
 logs/
 # 环境变量文件
 .pytest_cache/
